@@ -27,6 +27,7 @@ export default function Resume() {
         type="application/pdf"
         width="100%"
         height="1010px"
+        className="bg-white"
       />
     </section>
   );

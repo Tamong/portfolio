@@ -40,7 +40,7 @@ export async function generateMetadata({
   } = post.metadata;
 
   const ogImage =
-    image ?? `${metaData.baseUrl}/api/og?title=${encodeURIComponent(title)}`;
+    image ?? `${metaData.baseUrl}api/og?title=${encodeURIComponent(title)}`;
 
   return {
     title,

@@ -57,7 +57,6 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/favicon.ico" />
         <link rel="manifest" href="/manifest.json" />
-        <meta property="og:image" content="http://pwallis.com/api/og" />
       </head>
       <body className="md:mt-8">
         <main className="mx-auto flex min-h-screen max-w-3xl flex-col gap-8 p-4 text-white">

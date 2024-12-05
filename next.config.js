@@ -10,7 +10,7 @@ const config = {};
 const nextConfig = {
   transpilePackages: ["next-mdx-remote"],
   images: {
-    domains: ["localhost", "pwallis.com"],
+    domains: ["pwallis.com"],
   },
 };
 
