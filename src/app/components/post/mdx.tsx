@@ -84,7 +84,7 @@ const Code: FC<CodeProps> = ({ children, className }) => {
           {language}
         </div>
       )}
-      <pre className="scrollbar-hidden overflow-x-auto rounded-lg border border-gray-200 bg-gray-50 p-4 text-sm dark:border-gray-700 dark:bg-gray-900">
+      <pre className="scrollbar-hidden overflow-x-auto rounded-lg border border-gray-200 bg-gray-50 p-4 text-sm leading-relaxed dark:border-gray-700 dark:bg-gray-900">
         <code
           className={`block ${language ? `language-${language}` : ""}`}
           dangerouslySetInnerHTML={{ __html: codeHTML }}

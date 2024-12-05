@@ -34,7 +34,6 @@ html {
 
 pre code {
   counter-reset: sh-line-number;
-  line-height: 1.25;
 }
 
 .sh__line::before {
