@@ -3,7 +3,7 @@ export const metaData = {
   title: "Philip Wallis Portfolio",
   name: "Philip Wallis",
   ogImage: "/opengraph-image.png",
-  description: "Portfolio website for Philip Wallis.",
+  description: "Learn about Philip Wallis.",
 };
 
 export const socialLinks = {

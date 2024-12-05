@@ -3,14 +3,47 @@ import "@/styles/globals.css";
 import { GeistMono } from "geist/font/mono";
 import { type Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import Nav from "./components/nav";
 import Footer from "./components/footer";
+import { metaData } from "./config";
+import { SP } from "next/dist/shared/lib/utils";
 
 export const metadata: Metadata = {
-  title: "Philip Wallis",
-  description: "Learn more about Philip Wallis",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  metadataBase: new URL(metaData.baseUrl),
+  title: {
+    default: metaData.title,
+    template: `%s | ${metaData.title}`,
+  },
+  description: metaData.description,
+  openGraph: {
+    images: metaData.ogImage,
+    title: metaData.title,
+    description: metaData.description,
+    url: metaData.baseUrl,
+    siteName: metaData.name,
+    locale: "en_US",
+    type: "website",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  twitter: {
+    title: metaData.name,
+    card: "summary_large_image",
+  },
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
@@ -38,6 +71,7 @@ export default function RootLayout({
           <Footer />
         </main>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
