@@ -8,7 +8,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import Nav from "./components/nav";
 import Footer from "./components/footer";
 import { metaData } from "./config";
-import { SP } from "next/dist/shared/lib/utils";
 
 export const metadata: Metadata = {
   metadataBase: new URL(metaData.baseUrl),
@@ -50,11 +49,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="en"
-      style={{ colorScheme: "light" }}
-      className={`${GeistMono.className} light`}
-    >
+    <html lang="en" className={`${GeistMono.className}`}>
       <head>
         <title>Philip Wallis</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />

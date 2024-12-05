@@ -61,9 +61,8 @@ interface RoundedImageProps extends React.ComponentProps<typeof Image> {
 
 const RoundedImage: FC<RoundedImageProps> = (props) => (
   <Image
-    {...props}
-    alt={props.alt}
     className="mx-auto my-4 h-auto max-w-full rounded-lg drop-shadow-2xl"
+    {...props}
   />
 );
 
