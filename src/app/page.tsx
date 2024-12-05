@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 export default function Home() {
   return (
     <section className="text-md flex flex-col gap-6 py-4">

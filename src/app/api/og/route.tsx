@@ -4,9 +4,8 @@ import { metaData } from "@/app/config";
 async function loadGoogleFont(font: string, text: string) {
   const url = `https://fonts.googleapis.com/css2?family=${font}:wght@700&text=${encodeURIComponent(text)}`;
   const css = await (await fetch(url)).text();
-  const resource = css.match(
-    /src: url\((.+)\) format\('(opentype|truetype)'\)/,
-  );
+  const regex = /src: url\((.+)\) format\('(opentype|truetype)'\)/;
+  const resource = regex.exec(css);
 
   if (resource && resource.length > 1 && resource[1]) {
     const fontUrl = resource[1]; // Now fontUrl is guaranteed to be a string
@@ -20,8 +19,8 @@ async function loadGoogleFont(font: string, text: string) {
 }
 
 export async function GET(request: Request) {
-  let url = new URL(request.url);
-  let title = url.searchParams.get("title") || metaData.title;
+  const url = new URL(request.url);
+  const title = url.searchParams.get("title") ?? metaData.title;
 
   return new ImageResponse(
     (
