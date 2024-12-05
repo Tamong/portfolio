@@ -1,3 +1,46 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  /* Chrome, Safari and Opera */
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hidden {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
+
+/**
+ * sugar-high -> Code Block
+ */
+html {
+  background-color: #192b4a;
+}
+:root {
+  --sh-class: #5ccfe6; /* Library class/type color */
+  --sh-identifier: #cccac2; /* Variable/base foreground color */
+  --sh-sign: #707a8c; /* Soft gray for separators/punctuation */
+  --sh-property: #ffad66; /* Entity name/type color */
+  --sh-entity: #73d0df; /* Same as property, matching entity name color */
+  --sh-jsxliterals: #5ccfe6; /* Component/tag color */
+  --sh-string: #d5ff80; /* String color */
+  --sh-keyword: #ffad66; /* Keyword/storage color */
+  --sh-comment: #b8cfe680; /* Comment color with slight transparency */
+}
+
+pre code {
+  counter-reset: sh-line-number;
+  line-height: 0.75;
+}
+
+.sh__line::before {
+  counter-increment: sh-line-number 1;
+  content: counter(sh-line-number);
+  margin-right: 24px;
+  text-align: right;
+  color: #a4a4a4;
+}
