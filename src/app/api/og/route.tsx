@@ -27,7 +27,7 @@ export async function GET(request: Request) {
     (
       <div tw="flex w-full h-full justify-center items-center bg-[#192b4a] text-white">
         <h1 tw="text-6xl">{title}</h1>
-        <h1 tw="absolute bottom-4 left-8 text-4xl">{name}</h1>
+        <h1 tw="absolute bottom-4 right-12 text-4xl">{name}</h1>
       </div>
     ),
     {
