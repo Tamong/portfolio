@@ -24,19 +24,9 @@ export async function GET(request: Request) {
 
   return new ImageResponse(
     (
-      <div
-        style={{
-          backgroundColor: "#192b4a",
-          height: "100%",
-          width: "100%",
-          fontSize: 84,
-          fontFamily: "Geist",
-          justifyContent: "center",
-          alignItems: "center",
-          color: "#fff",
-        }}
-      >
-        {title}
+      <div tw="flex w-full h-full justify-center items-center bg-[#192b4a] text-white">
+        <h1 tw="text-6xl">{title}</h1>
+        <p tw="absolute bottom-4 left-8 text-4xl">Philip Wallis</p>
       </div>
     ),
     {

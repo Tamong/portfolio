@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Philip Wallis | Resume",
+  title: "Resume",
   description: "Philip Wallis Resume",
 };
 

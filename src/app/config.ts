@@ -1,6 +1,6 @@
 export const metaData = {
   baseUrl: "https://pwallis.com/",
-  title: "Philip Wallis Portfolio",
+  title: "Philip Wallis",
   name: "Philip Wallis",
   ogImage: "/opengraph-image.png",
   description: "Learn about Philip Wallis.",
