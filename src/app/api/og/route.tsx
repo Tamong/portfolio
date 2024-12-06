@@ -21,12 +21,13 @@ async function loadGoogleFont(font: string, text: string) {
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const title = url.searchParams.get("title") ?? metaData.title;
+  const name = "Philip Wallis";
 
   return new ImageResponse(
     (
       <div tw="flex w-full h-full justify-center items-center bg-[#192b4a] text-white">
         <h1 tw="text-6xl">{title}</h1>
-        <p tw="absolute bottom-4 left-8 text-4xl">Philip Wallis</p>
+        <h1 tw="absolute bottom-4 left-8 text-4xl">{name}</h1>
       </div>
     ),
     {
@@ -35,7 +36,7 @@ export async function GET(request: Request) {
       fonts: [
         {
           name: "Geist Mono",
-          data: await loadGoogleFont("Geist Mono", title),
+          data: await loadGoogleFont("Geist Mono", `${title} ${name}`),
           style: "normal",
         },
       ],
