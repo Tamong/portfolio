@@ -25,9 +25,7 @@ export default function Resume() {
       <embed
         src="/Philip_Wallis_Resume.pdf"
         type="application/pdf"
-        width="100%"
-        height="1010px"
-        className="bg-white"
+        className="flex h-[1010px] w-full bg-white"
       />
     </section>
   );
