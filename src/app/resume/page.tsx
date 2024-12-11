@@ -8,9 +8,7 @@ export const metadata = {
 export default function Resume() {
   return (
     <section className="flex flex-col gap-4">
-      <h1 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100">
-        Resume
-      </h1>
+      <h1 className="text-3xl font-bold text-neutral-100">Resume</h1>
       <p>
         Click{" "}
         <Link

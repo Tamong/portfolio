@@ -97,12 +97,12 @@ export default async function Blog({ params }: PageProps) {
       <h1 className="title mb-3 text-2xl font-medium tracking-tight">
         {post.metadata.title}
       </h1>
-      <div className="text-medium mb-8 mt-2 flex items-center justify-between">
-        <p className="text-sm text-neutral-600 dark:text-neutral-400">
+      <div className="mb-8 mt-2 flex items-center justify-between">
+        <p className="text-sm text-neutral-400">
           {formatDate(post.metadata.publishedAt)}
         </p>
       </div>
-      <article className="prose prose-quoteless prose-neutral dark:prose-invert">
+      <article>
         <CustomMDX source={post.content} />
       </article>
     </section>

@@ -31,10 +31,10 @@ export default function Posts() {
               prefetch={true}
             >
               <div className="flex w-full flex-col items-start justify-between space-y-1 sm:flex-row sm:items-center sm:space-x-2 sm:space-y-0">
-                <p className="tracking-tight text-black dark:text-white">
+                <p className="tracking-tight text-white">
                   {post.metadata.title}
                 </p>
-                <p className="text-sm tabular-nums text-neutral-600 dark:text-neutral-400">
+                <p className="text-sm tabular-nums text-neutral-400">
                   {formatDate(post.metadata.publishedAt, false)}
                 </p>
               </div>
