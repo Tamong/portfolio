@@ -84,7 +84,7 @@ const Code: FC<CodeProps> = ({ children, className }) => {
           {language}
         </div>
       )}
-      <pre className="scrollbar-hidden overflow-x-auto rounded-lg border border-gray-200 bg-gray-50 p-4 text-sm leading-relaxed dark:border-gray-700 dark:bg-gray-900">
+      <pre className="scrollbar-hidden overflow-x-auto rounded-lg border border-gray-700 bg-gray-900 p-4 text-sm leading-relaxed">
         <code
           className={`block ${language ? `language-${language}` : ""}`}
           dangerouslySetInnerHTML={{ __html: codeHTML }}
@@ -105,22 +105,16 @@ const Table: FC<TableProps> = ({ data }) => {
   const headers = data.headers.map((header, index) => (
     <th
       key={index}
-      className="border-b border-gray-200 bg-gray-100 px-4 py-2 text-left dark:border-gray-700 dark:bg-gray-800"
+      className="border-b border-gray-700 bg-gray-800 px-4 py-2 text-left"
     >
       {header}
     </th>
   ));
 
   const rows = data.rows.map((row, index) => (
-    <tr
-      key={index}
-      className="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800"
-    >
+    <tr key={index} className="transition-colors hover:bg-gray-800">
       {row.map((cell, cellIndex) => (
-        <td
-          key={cellIndex}
-          className="border-b border-gray-200 px-4 py-2 dark:border-gray-700"
-        >
+        <td key={cellIndex} className="border-b border-gray-700 px-4 py-2">
           {cell}
         </td>
       ))}
@@ -145,7 +139,7 @@ interface BlockquoteProps {
 
 function Blockquote({ children }: BlockquoteProps) {
   return (
-    <blockquote className="my-4 border-l-4 border-gray-300 pl-4 italic text-gray-700 dark:border-gray-600 dark:text-gray-300">
+    <blockquote className="my-4 border-l-4 border-gray-600 pl-4 italic text-gray-300">
       {children}
     </blockquote>
   );
@@ -161,7 +155,7 @@ interface CalloutProps {
 }
 
 const Callout: FC<CalloutProps> = ({ emoji, children }) => (
-  <div className="mb-8 flex items-center rounded bg-blue-50 p-4 text-sm text-neutral-900 dark:bg-blue-900/30 dark:text-neutral-100">
+  <div className="mb-8 flex items-center rounded bg-blue-600/30 p-4 text-sm text-neutral-100">
     <div className="mr-4 flex w-8 items-center text-2xl">{emoji}</div>
     <div className="callout w-full leading-relaxed">{children}</div>
   </div>
@@ -181,12 +175,12 @@ function createHeading(level: number): FC<{ children: string }> {
   const Heading: FC<{ children: string }> = ({ children }) => {
     const slug = slugify(children);
     const headingClasses: Record<number, string> = {
-      1: "text-3xl font-bold mb-4 mt-8 text-neutral-900 dark:text-neutral-100",
-      2: "text-2xl font-semibold mb-3 mt-6 text-neutral-900 dark:text-neutral-100",
-      3: "text-xl font-semibold mb-2 mt-4 text-neutral-900 dark:text-neutral-100",
-      4: "text-lg font-medium mb-2 mt-3 text-neutral-800 dark:text-neutral-200",
-      5: "text-base font-medium mb-1 mt-2 text-neutral-700 dark:text-neutral-300",
-      6: "text-sm font-medium mb-1 mt-1 text-neutral-600 dark:text-neutral-400",
+      1: "text-3xl font-bold mb-4 mt-8 text-neutral-100",
+      2: "text-2xl font-semibold mb-3 mt-6 text-neutral-100",
+      3: "text-xl font-semibold mb-2 mt-4 text-neutral-100",
+      4: "text-lg font-medium mb-2 mt-3 text-neutral-200",
+      5: "text-base font-medium mb-1 mt-2 text-neutral-300",
+      6: "text-sm font-medium mb-1 mt-1 text-neutral-400",
     };
 
     return React.createElement(
