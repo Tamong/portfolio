@@ -8,9 +8,11 @@ import path from "path";
 type Metadata = {
   title: string;
   publishedAt: string;
+  updatedAt?: string;
   summary: string;
   tags: string;
   image?: string;
+  category: string;
 };
 
 function parseFrontmatter(fileContent: string) {
@@ -55,7 +57,7 @@ function getMDXData(dir: string) {
 }
 
 export function getBlogPosts() {
-  return getMDXData(path.join(process.cwd(), "content/posts"));
+  return getMDXData(path.join(process.cwd(), "content/"));
 }
 
 export function formatDate(date: string, includeRelative = false) {

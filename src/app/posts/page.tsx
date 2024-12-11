@@ -38,6 +38,11 @@ export default function Posts() {
                   {formatDate(post.metadata.publishedAt, false)}
                 </p>
               </div>
+              <div>
+                <p className="max-w-md text-xs text-neutral-300">
+                  {post.metadata.summary}
+                </p>
+              </div>
             </Link>
           ))}
       </div>
