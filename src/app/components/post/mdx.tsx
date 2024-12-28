@@ -1,11 +1,11 @@
 import React, { type ReactNode, type FC, type ComponentType } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { MDXRemote, type MDXRemoteProps } from "next-mdx-remote/rsc";
 import { highlight } from "sugar-high";
 import { TweetComponent } from "./tweet";
 import { CaptionComponent } from "./caption";
 import { YouTubeComponent } from "./youtube";
+import { ImageWithModal } from "./ImageModal";
 import { ImageGrid } from "./image-grid";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
@@ -54,17 +54,6 @@ const CustomLink: FC<CustomLinkProps> = (props) => {
     </a>
   );
 };
-
-interface RoundedImageProps extends React.ComponentProps<typeof Image> {
-  alt: string;
-}
-
-const RoundedImage: FC<RoundedImageProps> = (props) => (
-  <Image
-    className="mx-auto my-4 h-auto max-w-full rounded-lg drop-shadow-2xl"
-    {...props}
-  />
-);
 
 interface CodeProps {
   children: string;
@@ -224,7 +213,7 @@ const components: MDXComponents = {
   h4: createHeading(4),
   h5: createHeading(5),
   h6: createHeading(6),
-  Image: RoundedImage,
+  Image: ImageWithModal,
   ImageGrid,
   a: CustomLink,
   StaticTweet: TweetComponent,

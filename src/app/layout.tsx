@@ -59,7 +59,7 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body className="md:mt-8">
-        <main className="mx-auto flex min-h-screen max-w-3xl flex-col gap-8 p-4 text-white">
+        <main className="mx-auto flex min-h-screen max-w-3xl flex-col gap-8 p-4">
           <Nav />
           {children}
           <Footer />

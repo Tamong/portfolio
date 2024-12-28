@@ -2,6 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    /* Main colors */
+    --primary: 24 6% 90%; /* stone-200 */
+    --color-primary-dark: 25 5% 25%; /* stone-700 */
+
+    /* Background colors */
+    --background: 20 6% 10%; /* stone-900 */
+    --background-dark: 12 6% 15%; /* stone-800 */
+
+    /* Accent colors */
+    --color-accent-blue: hsl(217 91% 60%); /* blue-500 */
+    --color-accent-green: hsl(142 72% 45%); /* green-500 */
+    --color-accent-red: hsl(0 84% 60%); /* red-500 */
+    --color-accent-amber: hsl(43 96% 50%); /* amber-500 */
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-background text-primary;
+  }
+}
+
 @layer utilities {
   /* Chrome, Safari and Opera */
   .scrollbar-hidden::-webkit-scrollbar {
@@ -17,9 +41,7 @@
 /**
  * sugar-high -> Code Block
  */
-html {
-  background-color: #192b4a;
-}
+
 :root {
   --sh-class: #5ccfe6; /* Library class/type color */
   --sh-identifier: #cccac2; /* Variable/base foreground color */

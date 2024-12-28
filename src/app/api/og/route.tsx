@@ -25,7 +25,7 @@ export async function GET(request: Request) {
 
   return new ImageResponse(
     (
-      <div tw="flex w-full h-full justify-center items-center bg-[#192b4a] text-white">
+      <div tw="flex w-full h-full justify-center items-center bg-stone-800 text-stone-200">
         <h1 tw="text-6xl">{title}</h1>
         <h1 tw="absolute bottom-4 right-12 text-4xl">{name}</h1>
       </div>

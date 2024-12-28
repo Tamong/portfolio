@@ -7,8 +7,8 @@ export default function manifest(): MetadataRoute.Manifest {
     description: "Philip Wallis Portfolio",
     start_url: "/",
     display: "standalone",
-    background_color: "#192b4a",
-    theme_color: "#192b4a",
+    background_color: "#1c1917",
+    theme_color: "#1c1917",
     icons: [
       {
         src: "/favicon.ico",
