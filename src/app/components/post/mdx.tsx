@@ -164,12 +164,12 @@ function createHeading(level: number): FC<{ children: string }> {
   const Heading: FC<{ children: string }> = ({ children }) => {
     const slug = slugify(children);
     const headingClasses: Record<number, string> = {
-      1: "text-3xl font-bold mb-4 mt-8 text-neutral-100",
-      2: "text-2xl font-semibold mb-3 mt-6 text-neutral-100",
-      3: "text-xl font-semibold mb-2 mt-4 text-neutral-100",
-      4: "text-lg font-medium mb-2 mt-3 text-neutral-200",
-      5: "text-base font-medium mb-1 mt-2 text-neutral-300",
-      6: "text-sm font-medium mb-1 mt-1 text-neutral-400",
+      1: "text-4xl font-semibold mb-4 mt-8 text-stone-100",
+      2: "text-3xl font-semibold mb-3 mt-6 text-stone-100",
+      3: "text-2xl font-semibold mb-2 mt-4 text-stone-100",
+      4: "text-xl font-medium mb-2 mt-3 text-stone-200",
+      5: "text-base font-medium mb-1 mt-2 text-stone-300",
+      6: "text-sm font-medium mb-1 mt-1 text-stone-400",
     };
 
     return React.createElement(

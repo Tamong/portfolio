@@ -98,11 +98,9 @@ export default async function Blog({ params }: PageProps) {
         {post.metadata.title}
       </h1>
       <div className="mb-8 mt-2 flex items-center justify-between">
-        <p className="text-sm text-neutral-400">
-          {formatDate(post.metadata.publishedAt)}
-        </p>
+        <p className="text-sm">{formatDate(post.metadata.publishedAt)}</p>
       </div>
-      <article>
+      <article className="text-stone-300">
         <CustomMDX source={post.content} />
       </article>
     </section>
