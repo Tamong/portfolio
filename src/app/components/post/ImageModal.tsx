@@ -27,6 +27,7 @@ export const ImageWithModal: React.FC<ImageWithModalProps> = (props) => {
     <>
       <Image
         {...props}
+        alt={props.alt || ""}
         className="mx-auto my-4 h-auto max-w-full cursor-pointer rounded-lg drop-shadow-2xl transition-transform hover:scale-[1.02]"
         onClick={openModal}
       />
@@ -47,6 +48,7 @@ export const ImageWithModal: React.FC<ImageWithModalProps> = (props) => {
           >
             <Image
               {...props}
+              alt={props.alt || ""}
               className="h-auto max-h-[90vh] w-auto max-w-[90vw] rounded-lg"
               onClick={(e) => e.stopPropagation()}
             />
