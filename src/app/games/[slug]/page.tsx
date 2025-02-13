@@ -2,19 +2,12 @@ import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { games, type GameSlug } from "@/app/lib/games";
 
-interface GamePageProps {
-  params: {
-    slug: GameSlug;
-  };
-}
+type Props = {
+  params: Promise<{ slug: GameSlug }>;
+};
 
-export function generateStaticParams() {
-  return Object.keys(games).map((slug) => ({
-    slug,
-  }));
-}
-
-export default function Games({ params: { slug } }: GamePageProps) {
+export default async function Page({ params }: Props) {
+  const { slug } = await params;
   if (!(slug in games)) {
     notFound();
   }
