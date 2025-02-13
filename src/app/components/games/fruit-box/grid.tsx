@@ -27,6 +27,7 @@ const Grid = memo(function Grid({
   const [isDragging, setIsDragging] = useState(false);
 
   const initializeGrid = useCallback(() => {
+    // First generate the grid with random numbers
     const newGrid = Array(10)
       .fill(null)
       .map(() =>
@@ -34,6 +35,27 @@ const Grid = memo(function Grid({
           .fill(null)
           .map(() => Math.floor(Math.random() * 9) + 1),
       );
+
+    // Calculate total sum
+    const totalSum = newGrid.reduce(
+      (sum, row) => sum + row.reduce((rowSum, cell) => rowSum + cell, 0),
+      0,
+    );
+
+    // Adjust the last cell to make total sum a multiple of 10
+    const lastRow = newGrid.length - 1;
+    const lastCol = newGrid[0] ? newGrid[0].length - 1 : 0;
+    const currentLastValue = newGrid[lastRow]?.[lastCol] ?? 0;
+    const remainder = totalSum % 10;
+
+    if (remainder !== 0) {
+      const adjustment =
+        remainder <= currentLastValue ? -remainder : 10 - remainder;
+      if (newGrid[lastRow]) {
+        newGrid[lastRow][lastCol] = Math.max(1, currentLastValue + adjustment);
+      }
+    }
+
     setGrid(newGrid);
     return newGrid;
   }, []);

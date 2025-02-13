@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import Grid from "@/app/components/apple-game/grid";
-import GameStats from "@/app/components/apple-game/game-stats";
+import Grid from "@/app/components/games/fruit-box/grid";
+import GameStats from "@/app/components/games/fruit-box/game-stats";
 
 export default function Home() {
   const [score, setScore] = useState(0);
@@ -42,7 +42,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="flex min-h-fit flex-col items-center justify-center p-8">
+    <section className="flex min-h-fit flex-col items-center justify-center p-8">
       <h1 className="mb-4 text-4xl font-bold">Fruit Box Game</h1>
       <GameStats
         score={score}
@@ -71,6 +71,6 @@ export default function Home() {
           </div>
         </>
       )}
-    </main>
+    </section>
   );
 }
