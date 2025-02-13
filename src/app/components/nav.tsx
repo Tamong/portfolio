@@ -9,6 +9,9 @@ export default function Nav() {
         </h1>
       </Link>
       <div className="flex gap-4">
+        <Link href="/games">
+          <h2 className="text-md">Games</h2>
+        </Link>
         <Link href="/posts">
           <h2 className="text-md">Posts</h2>
         </Link>
