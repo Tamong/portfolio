@@ -18,46 +18,11 @@ async function loadGoogleFont(font: string, text: string) {
   throw new Error("failed to load font data");
 }
 
-async function loadImage(title: string, src: string) {
-  const baseUrl =
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:3000"
-      : process.env.NEXT_PUBLIC_URL;
-
-  //const imageUrl = new URL(src, baseUrl).toString();
-  const imageUrl = baseUrl + src;
-  console.log(imageUrl);
-  return (
-    <>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={imageUrl}
-        alt={title}
-        className="flex w-full items-center justify-center"
-      />
-    </>
-  );
-}
-
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const title = url.searchParams.get("title") ?? metaData.title;
   const name = "Philip Wallis";
-  const path = url.searchParams.get("path") ?? "";
-
-  // Different layouts based on path
-  if (path == "games") {
-    try {
-      const ImageComponent = await loadImage(
-        title,
-        `/images/games/${title}.png`,
-      );
-      return new ImageResponse(ImageComponent);
-    } catch (error) {
-      console.error("Failed to generate image response:", error);
-      // Fall through to default response
-    }
-  }
+  //const path = url.searchParams.get("path") ?? "";
 
   return new ImageResponse(
     (

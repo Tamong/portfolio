@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const title = games[slug].title;
 
-  const ogImage = `${metaData.baseUrl}images/games/${title}.png`;
+  const ogImage = `${metaData.baseUrl}images/games/${slug}.png`;
 
   return {
     title,
