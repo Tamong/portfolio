@@ -25,6 +25,7 @@ async function loadImage(title: string, src: string) {
       : process.env.NEXT_PUBLIC_URL;
 
   const imageUrl = new URL(src, baseUrl).toString();
+  console.log(imageUrl);
   return (
     <>
       {/* eslint-disable-next-line @next/next/no-img-element */}

@@ -10,10 +10,16 @@ const config = {};
 const nextConfig = {
   transpilePackages: ["next-mdx-remote"],
   images: {
+    localPatterns: [
+      {
+        pathname: "/images/**",
+        search: "",
+      },
+    ],
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "**.pwallis.com",
+        hostname: "**.pwallis.com/**",
         port: "",
         search: "",
       },
