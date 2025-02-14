@@ -24,7 +24,8 @@ async function loadImage(title: string, src: string) {
       ? "http://localhost:3000"
       : process.env.NEXT_PUBLIC_URL;
 
-  const imageUrl = new URL(src, baseUrl).toString();
+  //const imageUrl = new URL(src, baseUrl).toString();
+  const imageUrl = baseUrl + src;
   console.log(imageUrl);
   return (
     <>
