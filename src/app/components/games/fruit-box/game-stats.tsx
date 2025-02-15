@@ -1,25 +1,36 @@
-import { memo } from "react";
+import { memo, useState, useEffect } from "react";
 import Timer from "./timer";
 
 interface GameStatsProps {
   score: number;
-  timeLeft: number;
-  setTimeLeft: (time: number) => void;
   isGameStarted: boolean;
   gameOver: boolean;
-  onTimeUp: () => void;
+  onGameOver: () => void;
   activeCombinations: number;
 }
 
 const GameStats = memo(function GameStats({
   score,
-  timeLeft,
-  setTimeLeft,
   isGameStarted,
   gameOver,
-  onTimeUp,
+  onGameOver,
   activeCombinations,
 }: GameStatsProps) {
+  const [timeLeft, setTimeLeft] = useState(120);
+
+  useEffect(() => {
+    if (isGameStarted && !gameOver) {
+      setTimeLeft(120);
+    }
+  }, [isGameStarted, gameOver]);
+
+  useEffect(() => {
+    // End game when time runs out
+    if (timeLeft <= 0 && isGameStarted && !gameOver) {
+      onGameOver();
+    }
+  }, [timeLeft, isGameStarted, gameOver, onGameOver]);
+
   return (
     <div className="mb-4 flex flex-col items-center text-xl">
       <span className="mr-4">Score: {score}/170</span>
@@ -28,7 +39,7 @@ const GameStats = memo(function GameStats({
         setTimeLeft={setTimeLeft}
         isGameStarted={isGameStarted}
         gameOver={gameOver}
-        onTimeUp={onTimeUp}
+        onTimeUp={onGameOver}
       />
       <span>Combos Left: {activeCombinations}</span>
     </div>
