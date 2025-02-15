@@ -6,6 +6,8 @@ interface CellProps {
   onMouseDown: () => void;
   onMouseEnter: () => void;
   onMouseUp: () => void;
+  onTouchStart: () => void;
+  position: [number, number];
 }
 
 function Cell({
@@ -14,10 +16,14 @@ function Cell({
   onMouseDown,
   onMouseEnter,
   onMouseUp,
+  onTouchStart,
+  position,
 }: CellProps) {
+  const [row, col] = position;
+
   return (
     <li
-      className={`relative flex h-10 w-10 cursor-pointer select-none items-center justify-center text-lg font-bold ${
+      className={`relative flex h-10 w-10 cursor-pointer touch-none select-none items-center justify-center text-lg font-bold ${
         isSelected
           ? "bg-yellow-100"
           : value === 0
@@ -27,6 +33,11 @@ function Cell({
       onMouseDown={onMouseDown}
       onMouseEnter={onMouseEnter}
       onMouseUp={onMouseUp}
+      onTouchStart={(e) => {
+        e.preventDefault();
+        onTouchStart();
+      }}
+      data-cell={`${row}-${col}`}
     >
       {value !== 0 && (
         <>

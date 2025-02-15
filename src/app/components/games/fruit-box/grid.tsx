@@ -74,24 +74,6 @@ const Grid = memo(function Grid({
     }
   }, [grid, onActiveCombinationsChange, onGameOver]);
 
-  const handleMouseDown = useCallback((row: number, col: number) => {
-    setIsDragging(true);
-    setSelectionBox({ startRow: row, startCol: col, endRow: row, endCol: col });
-  }, []);
-
-  const handleMouseEnter = useCallback(
-    (row: number, col: number) => {
-      if (isDragging && selectionBox) {
-        setSelectionBox((prev: SelectionBox | null) => ({
-          ...prev!,
-          endRow: row,
-          endCol: col,
-        }));
-      }
-    },
-    [isDragging, selectionBox],
-  );
-
   const getSelectedCells = useCallback(
     (box: SelectionBox) => {
       const cells = [];
@@ -140,6 +122,81 @@ const Grid = memo(function Grid({
     }
     setSelectionBox(null);
   }, [grid, selectionBox, onScoreUpdate, getSelectedCells, removeSelection]);
+
+  const handleMouseDown = useCallback((row: number, col: number) => {
+    setIsDragging(true);
+    setSelectionBox({ startRow: row, startCol: col, endRow: row, endCol: col });
+  }, []);
+
+  const handleMouseEnter = useCallback(
+    (row: number, col: number) => {
+      if (isDragging && selectionBox) {
+        setSelectionBox((prev: SelectionBox | null) => ({
+          ...prev!,
+          endRow: row,
+          endCol: col,
+        }));
+      }
+    },
+    [isDragging, selectionBox],
+  );
+
+  const handleTouchStart = useCallback((row: number, col: number) => {
+    setIsDragging(true);
+    setSelectionBox({ startRow: row, startCol: col, endRow: row, endCol: col });
+  }, []);
+
+  const handleTouchMove = useCallback(
+    (event: TouchEvent) => {
+      if (isDragging && selectionBox) {
+        const touch = event.touches[0];
+        if (!touch) return;
+
+        const element = document.elementFromPoint(touch.clientX, touch.clientY);
+        if (element?.hasAttribute("data-cell")) {
+          const [row, col] = element
+            .getAttribute("data-cell")!
+            .split("-")
+            .map(Number);
+          setSelectionBox((prev) => ({
+            ...prev!,
+            endRow: row ?? prev!.endRow,
+            endCol: col ?? prev!.endCol,
+          }));
+        }
+      }
+    },
+    [isDragging, selectionBox],
+  );
+
+  const handleTouchEnd = handleMouseUp;
+
+  useEffect(() => {
+    document.addEventListener("touchmove", handleTouchMove);
+    document.addEventListener("touchend", handleTouchEnd);
+
+    return () => {
+      document.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, [handleTouchMove, handleTouchEnd]);
+
+  // Add new useEffect for scroll prevention
+  useEffect(() => {
+    const preventScroll = (e: TouchEvent | WheelEvent) => {
+      if (isDragging) {
+        e.preventDefault();
+      }
+    };
+
+    document.addEventListener("touchmove", preventScroll, { passive: false });
+    document.addEventListener("wheel", preventScroll, { passive: false });
+
+    return () => {
+      document.removeEventListener("touchmove", preventScroll);
+      document.removeEventListener("wheel", preventScroll);
+    };
+  }, [isDragging]);
 
   const getActiveCombinations = (grid: number[][]) => {
     if (!grid.length) return { count: 0, list: [] };
@@ -237,15 +294,23 @@ const Grid = memo(function Grid({
         onMouseDown={() => handleMouseDown(rowIndex, colIndex)}
         onMouseEnter={() => handleMouseEnter(rowIndex, colIndex)}
         onMouseUp={handleMouseUp}
+        onTouchStart={() => handleTouchStart(rowIndex, colIndex)}
+        position={[rowIndex, colIndex]}
       />
     ),
-    [handleMouseDown, handleMouseEnter, handleMouseUp, isSelected],
+    [
+      handleMouseDown,
+      handleMouseEnter,
+      handleMouseUp,
+      handleTouchStart,
+      isSelected,
+    ],
   );
 
   return useMemo(
     () => (
       <ol
-        className="grid grid-cols-[repeat(17,_minmax(0,_1fr))] overflow-hidden rounded-xl border-2 bg-stone-100 p-2 shadow-xl"
+        className="grid touch-none grid-cols-[repeat(17,_minmax(0,_1fr))] overflow-hidden rounded-xl border-2 bg-stone-100 p-2 shadow-xl"
         onMouseLeave={handleMouseUp}
       >
         {grid.map((row, rowIndex) => (
