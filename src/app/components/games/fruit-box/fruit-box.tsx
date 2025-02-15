@@ -42,10 +42,6 @@ export default function Home() {
     }, 0);
   }, []);
 
-  const handleTimeUp = useCallback(() => {
-    setGameOver(true);
-  }, []);
-
   return (
     <section className="flex min-h-fit flex-col items-center justify-center p-8">
       <h1 className="mb-4 text-4xl font-bold">Fruit Box Game</h1>

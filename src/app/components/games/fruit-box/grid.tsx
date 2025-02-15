@@ -171,9 +171,13 @@ const Grid = memo(function Grid({
   useEffect(() => {
     const handleGlobalMouseMove = (e: MouseEvent) => {
       if (isDragging) {
-        const element = document.elementFromPoint(e.clientX, e.clientY);
-        if (element?.hasAttribute("data-cell")) {
-          const [row, col] = element
+        // Get all elements under the mouse position using elementsFromPoint
+        const elements = document.elementsFromPoint(e.clientX, e.clientY);
+        // Find the first element with data-cell attribute
+        const cellElement = elements.find((el) => el.hasAttribute("data-cell"));
+
+        if (cellElement?.hasAttribute("data-cell")) {
+          const [row, col] = cellElement
             .getAttribute("data-cell")!
             .split("-")
             .map(Number);
@@ -189,17 +193,21 @@ const Grid = memo(function Grid({
     };
 
     const handleGlobalTouchMove = (e: TouchEvent) => {
-      e.preventDefault(); // Prevent scrolling
+      e.preventDefault();
       if (isDragging) {
         const touch = e.touches[0];
         if (!touch) return;
-        // Get element directly under the touch point
-        const element = document
-          .elementFromPoint(touch.clientX, touch.clientY)
-          ?.closest("[data-cell]");
 
-        if (element?.hasAttribute("data-cell")) {
-          const [row, col] = element
+        // Get all elements under the touch point
+        const elements = document.elementsFromPoint(
+          touch.clientX,
+          touch.clientY,
+        );
+        // Find the first element with data-cell attribute
+        const cellElement = elements.find((el) => el.hasAttribute("data-cell"));
+
+        if (cellElement?.hasAttribute("data-cell")) {
+          const [row, col] = cellElement
             .getAttribute("data-cell")!
             .split("-")
             .map(Number);
