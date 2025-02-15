@@ -107,8 +107,27 @@ const Grid = memo(function Grid({
     [grid],
   );
 
+  const handleMouseDown = useCallback((row: number, col: number) => {
+    setIsDragging(true);
+    setSelectionBox({ startRow: row, startCol: col, endRow: row, endCol: col });
+  }, []);
+
+  const handleMouseEnter = useCallback(
+    (row: number, col: number) => {
+      if (isDragging) {
+        setSelectionBox((prev) => ({
+          ...prev!,
+          endRow: row,
+          endCol: col,
+        }));
+      }
+    },
+    [isDragging],
+  );
+
   const handleMouseUp = useCallback(() => {
-    setIsDragging(false);
+    if (!isDragging) return;
+
     if (selectionBox) {
       const selectedCells = getSelectedCells(selectionBox);
       const sum = selectedCells.reduce(
@@ -120,26 +139,16 @@ const Grid = memo(function Grid({
         removeSelection(selectedCells);
       }
     }
+    setIsDragging(false);
     setSelectionBox(null);
-  }, [grid, selectionBox, onScoreUpdate, getSelectedCells, removeSelection]);
-
-  const handleMouseDown = useCallback((row: number, col: number) => {
-    setIsDragging(true);
-    setSelectionBox({ startRow: row, startCol: col, endRow: row, endCol: col });
-  }, []);
-
-  const handleMouseEnter = useCallback(
-    (row: number, col: number) => {
-      if (isDragging && selectionBox) {
-        setSelectionBox((prev: SelectionBox | null) => ({
-          ...prev!,
-          endRow: row,
-          endCol: col,
-        }));
-      }
-    },
-    [isDragging, selectionBox],
-  );
+  }, [
+    isDragging,
+    grid,
+    selectionBox,
+    onScoreUpdate,
+    getSelectedCells,
+    removeSelection,
+  ]);
 
   const handleTouchStart = useCallback((row: number, col: number) => {
     setIsDragging(true);
@@ -147,56 +156,82 @@ const Grid = memo(function Grid({
   }, []);
 
   const handleTouchMove = useCallback(
-    (event: TouchEvent) => {
-      if (isDragging && selectionBox) {
-        const touch = event.touches[0];
-        if (!touch) return;
+    (row: number, col: number) => {
+      if (isDragging) {
+        setSelectionBox((prev) => ({
+          ...prev!,
+          endRow: row,
+          endCol: col,
+        }));
+      }
+    },
+    [isDragging],
+  );
 
-        const element = document.elementFromPoint(touch.clientX, touch.clientY);
+  useEffect(() => {
+    const handleGlobalMouseMove = (e: MouseEvent) => {
+      if (isDragging) {
+        const element = document.elementFromPoint(e.clientX, e.clientY);
         if (element?.hasAttribute("data-cell")) {
           const [row, col] = element
             .getAttribute("data-cell")!
             .split("-")
             .map(Number);
-          setSelectionBox((prev) => ({
-            ...prev!,
-            endRow: row ?? prev!.endRow,
-            endCol: col ?? prev!.endCol,
-          }));
+          if (row !== undefined && col !== undefined) {
+            handleMouseEnter(row, col);
+          }
         }
       }
-    },
-    [isDragging, selectionBox],
-  );
-
-  const handleTouchEnd = handleMouseUp;
-
-  useEffect(() => {
-    document.addEventListener("touchmove", handleTouchMove);
-    document.addEventListener("touchend", handleTouchEnd);
-
-    return () => {
-      document.removeEventListener("touchmove", handleTouchMove);
-      document.removeEventListener("touchend", handleTouchEnd);
     };
-  }, [handleTouchMove, handleTouchEnd]);
 
-  // Add new useEffect for scroll prevention
-  useEffect(() => {
-    const preventScroll = (e: TouchEvent | WheelEvent) => {
+    const handleGlobalMouseUp = () => {
+      handleMouseUp();
+    };
+
+    const handleGlobalTouchMove = (e: TouchEvent) => {
+      e.preventDefault(); // Prevent scrolling
       if (isDragging) {
-        e.preventDefault();
+        const touch = e.touches[0];
+        if (!touch) return;
+        // Get element directly under the touch point
+        const element = document
+          .elementFromPoint(touch.clientX, touch.clientY)
+          ?.closest("[data-cell]");
+
+        if (element?.hasAttribute("data-cell")) {
+          const [row, col] = element
+            .getAttribute("data-cell")!
+            .split("-")
+            .map(Number);
+          if (row !== undefined && col !== undefined) {
+            handleTouchMove(row, col);
+          }
+        }
       }
     };
 
-    document.addEventListener("touchmove", preventScroll, { passive: false });
-    document.addEventListener("wheel", preventScroll, { passive: false });
+    const handleGlobalTouchEnd = () => {
+      handleMouseUp();
+    };
+
+    if (isDragging) {
+      document.addEventListener("mousemove", handleGlobalMouseMove);
+      document.addEventListener("mouseup", handleGlobalMouseUp);
+      document.addEventListener("touchmove", handleGlobalTouchMove, {
+        passive: false,
+      });
+      document.addEventListener("touchend", handleGlobalTouchEnd);
+      document.addEventListener("touchcancel", handleGlobalTouchEnd);
+    }
 
     return () => {
-      document.removeEventListener("touchmove", preventScroll);
-      document.removeEventListener("wheel", preventScroll);
+      document.removeEventListener("mousemove", handleGlobalMouseMove);
+      document.removeEventListener("mouseup", handleGlobalMouseUp);
+      document.removeEventListener("touchmove", handleGlobalTouchMove);
+      document.removeEventListener("touchend", handleGlobalTouchEnd);
+      document.removeEventListener("touchcancel", handleGlobalTouchEnd);
     };
-  }, [isDragging]);
+  }, [isDragging, handleMouseEnter, handleMouseUp, handleTouchMove]);
 
   const getActiveCombinations = (grid: number[][]) => {
     if (!grid.length) return { count: 0, list: [] };
@@ -293,16 +328,16 @@ const Grid = memo(function Grid({
         isSelected={isSelected(rowIndex, colIndex)}
         onMouseDown={() => handleMouseDown(rowIndex, colIndex)}
         onMouseEnter={() => handleMouseEnter(rowIndex, colIndex)}
-        onMouseUp={handleMouseUp}
         onTouchStart={() => handleTouchStart(rowIndex, colIndex)}
+        onTouchMove={() => handleTouchMove(rowIndex, colIndex)}
         position={[rowIndex, colIndex]}
       />
     ),
     [
       handleMouseDown,
       handleMouseEnter,
-      handleMouseUp,
       handleTouchStart,
+      handleTouchMove,
       isSelected,
     ],
   );
@@ -310,8 +345,12 @@ const Grid = memo(function Grid({
   return useMemo(
     () => (
       <ol
-        className="grid touch-none grid-cols-[repeat(17,_minmax(0,_1fr))] overflow-hidden rounded-xl border-2 bg-stone-100 p-2 shadow-xl"
+        className="grid touch-none select-none grid-cols-[repeat(17,_minmax(0,_1fr))] overflow-hidden rounded-xl border-2 bg-stone-100 p-2 shadow-xl"
+        onContextMenu={(e) => e.preventDefault()} // Prevent context menu on long press
+        onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
+        onTouchEnd={handleMouseUp}
+        onTouchCancel={handleMouseUp}
       >
         {grid.map((row, rowIndex) => (
           <React.Fragment key={`row-${rowIndex}`}>
