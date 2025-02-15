@@ -144,7 +144,7 @@ interface CalloutProps {
 }
 
 const Callout: FC<CalloutProps> = ({ emoji, children }) => (
-  <div className="mb-8 flex items-center rounded bg-blue-600/30 p-4 text-sm text-neutral-100">
+  <div className="my-6 flex items-center rounded bg-blue-600/30 p-4 text-sm text-neutral-100">
     <div className="mr-4 flex w-8 items-center text-2xl">{emoji}</div>
     <div className="callout w-full leading-relaxed">{children}</div>
   </div>
@@ -224,6 +224,9 @@ const components: MDXComponents = {
   del: Strikethrough,
   Callout,
   blockquote: Blockquote,
+  ul: (props: any) => <ol className="ml-6 list-disc" {...props} />,
+  ol: (props: any) => <ol className="ml-8 list-decimal" {...props} />,
+  hr: () => <hr className="my-8 border-t border-gray-700" />,
 };
 
 export const CustomMDX: FC<MDXRemoteProps> = (props) => {
