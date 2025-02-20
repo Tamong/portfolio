@@ -53,17 +53,14 @@ export default function RootLayout({
       <head>
         <title>Philip Wallis</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="Learn more about Philip Wallis" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/favicon.ico" />
         <link rel="manifest" href="/manifest.json" />
       </head>
-      <body className="md:mt-8">
-        <main className="mx-auto flex min-h-screen max-w-3xl flex-col gap-8 p-4">
-          <Nav />
-          {children}
-          <Footer />
-        </main>
+      <body className="mx-auto mt-4 flex h-[97dvh] max-w-3xl flex-col px-4">
+        <Nav />
+        <main className="mb-auto">{children}</main>
+        <Footer />
         <Analytics />
         <SpeedInsights />
       </body>

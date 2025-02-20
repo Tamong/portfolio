@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Nav() {
   return (
-    <div className="flex items-center justify-between text-white md:flex-row">
+    <nav className="mb-8 flex items-center justify-between text-white md:flex-row">
       <Link href="/">
         <h1 className="text-2xl font-extrabold tracking-tight">
           Philip Wallis
@@ -19,6 +19,6 @@ export default function Nav() {
           <h2 className="text-md">Resume</h2>
         </Link>
       </div>
-    </div>
+    </nav>
   );
 }

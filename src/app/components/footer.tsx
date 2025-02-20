@@ -4,7 +4,7 @@ import { Instagram, GitHub, YouTube, LinkedIn, GMail } from "./icons";
 
 export default function Footer() {
   return (
-    <div className="my-8 flex items-center justify-between text-white md:flex-row">
+    <footer className="my-8 flex items-center justify-between text-white md:flex-row">
       <Link href="/">
         <h1 className="text-sm tracking-tight">© 2024 Philip Wallis</h1>
       </Link>
@@ -25,6 +25,6 @@ export default function Footer() {
           <YouTube width={16} fill="#ffffff" />
         </Link>
       </div>
-    </div>
+    </footer>
   );
 }
