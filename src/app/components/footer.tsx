@@ -4,7 +4,7 @@ import { Instagram, GitHub, YouTube, LinkedIn, GMail } from "./icons";
 
 export default function Footer() {
   return (
-    <footer className="flex items-center justify-between py-8 text-white md:flex-row">
+    <footer className="flex items-center justify-between py-4 text-white md:flex-row">
       <Link href="/">
         <h1 className="text-sm tracking-tight">© 2024 Philip Wallis</h1>
       </Link>
