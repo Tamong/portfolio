@@ -57,7 +57,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/favicon.ico" />
         <link rel="manifest" href="/manifest.json" />
       </head>
-      <body className="mx-auto mt-4 flex h-[97dvh] max-w-3xl flex-col px-4">
+      <body className="mx-auto mt-8 flex h-[97dvh] max-w-3xl flex-col px-4">
         <Nav />
         <main className="mb-auto">{children}</main>
         <Footer />
