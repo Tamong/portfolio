@@ -6,6 +6,12 @@ export const games = {
     image: "/images/games/fruit-box.png",
     component: lazy(() => import("@/app/components/games/fruit-box/fruit-box")),
   },
+  tetris: {
+    title: "Tetris",
+    image: "/images/games/tetris.png",
+    component: lazy(() => import("@/app/components/games/tetris/tetris")),
+  },
+
   // Add more games here
   // 'tetris': {
   //   title: 'Tetris',
