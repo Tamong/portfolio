@@ -1,29 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
+import { games } from "@/app/lib/games";
 
 export const metadata = {
   title: "Games",
   description: "Philip Wallis games",
 };
 
-type Game = {
-  title: string;
-  image: string;
-  slug: string;
-};
-
 export default function Games() {
-  /*
-  const allGames = getGames();
-  */
+  const allGames = Object.entries(games).map(([slug, { title, image }]) => ({
+    title,
+    image,
+    slug,
+  }));
 
-  const allGames: Game[] = [
-    {
-      title: "Fruit Box",
-      image: "/images/games/fruit-box.png",
-      slug: "fruit-box",
-    },
-  ];
   return (
     <section className="flex flex-col gap-4">
       <h1 className="text-2xl font-medium tracking-tight">Games</h1>
