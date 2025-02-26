@@ -12,8 +12,6 @@ const GameStats = memo(function GameStats({
   score,
   level,
   lines,
-  isGameStarted,
-  gameOver,
 }: GameStatsProps) {
   return (
     <div className="mb-6 flex flex-row items-center justify-center gap-8 text-xl text-stone-700">

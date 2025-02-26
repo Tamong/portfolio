@@ -6,12 +6,14 @@ export interface Tetromino {
   type: TetrominoType;
 }
 
-type TetrominoShapeMap = {
-  [key in TetrominoType]: {
+// Changed from index signature to Record type
+type TetrominoShapeMap = Record<
+  TetrominoType,
+  {
     shape: number[][];
     color: string;
-  };
-};
+  }
+>;
 
 export const TETROMINOS: TetrominoShapeMap = {
   "0": { shape: [[0]], color: "0, 0, 0" },

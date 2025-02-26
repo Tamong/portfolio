@@ -5,7 +5,6 @@ import Board from "./board";
 import GameStats from "./game-stats";
 import NextPiece from "./next-piece";
 import { useGameLogic } from "./hooks/useGameLogic";
-import { randomTetromino } from "./utils/tetrominos";
 
 export default function Tetris() {
   const [gameOver, setGameOver] = useState(false);

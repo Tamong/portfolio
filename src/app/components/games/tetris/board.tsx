@@ -2,8 +2,8 @@
 
 import { memo, useEffect } from "react";
 import Cell from "./cell";
-import { Tetromino, TetrominoType } from "./utils/tetrominos";
-import { BoardCell } from "./hooks/useGameLogic";
+import { type Tetromino } from "./utils/tetrominos";
+import { type BoardCell } from "./hooks/useGameLogic";
 
 interface BoardProps {
   board: BoardCell[][];
@@ -72,7 +72,7 @@ const Board = memo(function Board({
         className="grid gap-0"
         style={{
           gridTemplateRows: `repeat(${board.length}, minmax(0, 1fr))`,
-          gridTemplateColumns: `repeat(${board[0]?.length || 0}, minmax(0, 1fr))`,
+          gridTemplateColumns: `repeat(${board[0]?.length ?? 0}, minmax(0, 1fr))`,
         }}
       >
         {boardWithPiece.map((row, y) =>

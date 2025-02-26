@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { Tetromino } from "./utils/tetrominos";
+import { type Tetromino } from "./utils/tetrominos";
 import Cell from "./cell";
 
 interface NextPieceProps {
@@ -15,7 +15,7 @@ const NextPiece = memo(function NextPiece({ tetromino }: NextPieceProps) {
           className="grid gap-0 p-1"
           style={{
             gridTemplateRows: `repeat(${tetromino.shape.length}, minmax(0, 1fr))`,
-            gridTemplateColumns: `repeat(${tetromino.shape[0]?.length || 0}, minmax(0, 1fr))`,
+            gridTemplateColumns: `repeat(${tetromino.shape[0]?.length ?? 0}, minmax(0, 1fr))`,
           }}
         >
           {tetromino.shape.map((row, y) =>

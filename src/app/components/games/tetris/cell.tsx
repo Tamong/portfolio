@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { TETROMINOS, TetrominoType } from "./utils/tetrominos";
+import { TETROMINOS, type TetrominoType } from "./utils/tetrominos";
 
 interface CellProps {
   type: 0 | 1;

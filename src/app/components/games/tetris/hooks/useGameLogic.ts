@@ -1,5 +1,9 @@
 import { useState, useCallback, useEffect } from "react";
-import { randomTetromino, Tetromino, TetrominoType } from "../utils/tetrominos";
+import {
+  randomTetromino,
+  type Tetromino,
+  type TetrominoType,
+} from "../utils/tetrominos";
 
 // Constants
 const BOARD_WIDTH = 10;
@@ -66,10 +70,19 @@ export const useGameLogic = (isGameStarted: boolean, gameOver: boolean) => {
   // Check for collision
   const checkCollision = useCallback(
     (piece: GamePiece, board: BoardCell[][], movement = { x: 0, y: 0 }) => {
+      // Early validation of tetromino shape
+      if (!piece.tetromino.shape?.length) {
+        return false;
+      }
+
       for (let y = 0; y < piece.tetromino.shape.length; y++) {
-        for (let x = 0; x < piece.tetromino.shape[y].length; x++) {
+        // Check if this row exists in the shape
+        const row = piece.tetromino.shape[y];
+        if (!row) continue;
+
+        for (let x = 0; x < row.length; x++) {
           // Skip empty squares
-          if (piece.tetromino.shape[y][x] === 0) continue;
+          if (row[x] === 0) continue;
 
           // Calculate new position
           const newX = piece.pos.x + x + movement.x;
@@ -80,8 +93,8 @@ export const useGameLogic = (isGameStarted: boolean, gameOver: boolean) => {
             return true;
           }
 
-          // Check if already occupied - ensure we don't access outside board bounds
-          if (newY >= 0 && board[newY]?.[newX]?.filled) {
+          // Check if already occupied - using optional chaining to handle out-of-bounds
+          if (board[newY]?.[newX]?.filled) {
             return true;
           }
         }
@@ -111,13 +124,12 @@ export const useGameLogic = (isGameStarted: boolean, gameOver: boolean) => {
               boardY < BOARD_HEIGHT &&
               boardX >= 0 &&
               boardX < BOARD_WIDTH
-            )
-              if (newBoard[boardY]) {
-                newBoard[boardY][boardX] = {
-                  filled: true,
-                  tetrominoType: piece.tetromino.type,
-                };
-              }
+            ) {
+              newBoard[boardY]![boardX] = {
+                filled: true,
+                tetrominoType: piece.tetromino.type,
+              };
+            }
           }
         });
       });
@@ -154,7 +166,7 @@ export const useGameLogic = (isGameStarted: boolean, gameOver: boolean) => {
         const linePoints = [40, 100, 300, 1200]; // Points for 1, 2, 3, 4 rows
         setScore(
           (prev) =>
-            prev + (linePoints[Math.min(rowsCleared, 4) - 1] || 0) * level,
+            prev + (linePoints[Math.min(rowsCleared, 4) - 1] ?? 0) * level,
         );
         setLines((prev) => prev + rowsCleared);
 
@@ -292,6 +304,7 @@ export const useGameLogic = (isGameStarted: boolean, gameOver: boolean) => {
     gameOver,
     currentPiece.collided,
     board,
+    currentPiece,
     nextPiece,
     updateBoard,
     clearRows,
