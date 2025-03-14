@@ -1,0 +1,117 @@
+---
+title: "Setting Up Home Network at My Parent's House"
+publishedAt: "2024-12-28"
+summary: "Home Network setup with two Google Wifi Router and a TP-Link ethernet switch, on top of an ISP router"
+tags: "Network, Smart Home"
+category: "Project"
+---
+
+It's been a few months since I've set up my home network and so far it has served me and my family with zero issues, so I want to share my experience on how I set up my home network using two [Google Wifi (AC1200)](https://www.amazon.com/Google-Wifi-System-Router-Replacement/dp/B08GG9CMLR) router and a [TP-Link TL-SG105](https://www.amazon.com/Ethernet-Splitter-Optimization-Unmanaged-TL-SG105/dp/B00A128S24) ethernet switch.
+
+## Why upgrade?
+
+There are two main reasons I opted to upgrade the home network:
+
+\
+First, rooms that are far away from the router would suffer from lagging and frequent disconenctions. On wireless connections, I would get 200-300 mbps in the same room of the router,
+but the opposite end of the house would get only 2-3 mbps, on top of disconnecting very often.
+
+\
+Secondly, as we buy more smart home accessories, I started to notice lags when using _any_ device wirelessly.
+It could be an issue with the router given by the ISP ([BGW210](https://www.amazon.com/BGW210-802-11b-Wireless-Gateway-Required/dp/B09J432DDY)) being overwhelmed, but I am not too sure.
+
+## Upgrade #1 (Ethernet Switch)
+
+The first upgrade I did was in 2021, getting the ethernet switch for upstairs computers.
+
+<Image
+  src="/images/setting-up-home-network/TL-SG105.png"
+  alt="TL-SG105 ethernet switch"
+  width={360}
+  height={360}
+/>
+<Caption>TP-Link TL-SG105 ethernet switch</Caption>
+
+In 2020, I purchased a 100ft ethernet cable to hook up to my brother's computer upstairs,
+but as Work-From-Home and smart home demands were getting higher, we needed to connect more computers upstairs.
+
+By connecting the port #5 to the router, I can use ports #1-4 to connect my PC, my dad's, and my brothers and still have a port open to use for the future.
+
+<Image
+  src="/images/setting-up-home-network/part-1.png"
+  alt="Network Diagram Part 1"
+  width={1000}
+  height={360}
+/>
+<Caption>Network diagram with the switch</Caption>
+
+This setup worked great with the exception of Wi-Fi still being slow, but it was good enough at this point... until we bought more smart home devices.
+
+## Upgrade #2 (Adding a Router)
+
+I originally purchased the google router 3-pack to have more network control at an apartment that had wifi included, but as I moved out, I brought the routers back as well.
+
+<Image
+  src="/images/setting-up-home-network/AC1200.png"
+  alt="Google Wifi AC1200 3-pack"
+  width={360}
+  height={360}
+/>
+<Caption>Google Wifi AC1200 3-pack</Caption>
+
+My first thought was that since the ISP's router was taking too many devices, maybe adding the google router to distribute the usage would help, and it did.
+
+<Image
+  src="/images/setting-up-home-network/part-2.png"
+  alt="Network Diagram Part 2"
+  width={1000}
+  height={360}
+/>
+<Caption>Added the google router</Caption>
+
+I installed this right next to the original ISP with the intention of splitting the devices into the two separate routers.
+This worked and I experienced less interruptions, but because this is installed on the first floor, it didn't fix the slow Wi-Fi speed at the far rooms.
+
+## Final Upgrade (Secondary/Bridge Router)
+
+This time, instead of just adding another router to upstairs, I rerouted the switch so it comes from the Google Router rather than the ISP router,
+that way I can use the newly added router as a bridge.
+
+This allowed me to essentially create a range extension rather than a whole new Wi-Fi identifier.
+
+<Image
+  src="/images/setting-up-home-network/part-3.png"
+  alt="Network Diagram Part 3"
+  width={1000}
+  height={360}
+/>
+<Caption>Added another google router, upstairs</Caption>
+
+This was the most significant Quality-of-Life upgrade for me. Since my room is the furthest from the original Wi-Fi access point, it had been severely affected by Wi-Fi degradation.
+After this upgrade, I went from experiencing disconnections every five minutes to consistently achieving 200-300 Mbps internet speeds in my room.
+\
+\
+At the end, here is the list of devices connected to each router:
+
+<Table
+  data={{
+    headers: ["Router", "Devices"],
+    rows: [
+      [
+        "ISP Router",
+        "Multiple Light Bulbs, Tesla, HP Printer, 2 Google Nest Thermostats, Google Nest Doorbell",
+      ],
+      ["Google Routers", "3 PCs, Smart TV, mobile devices"],
+    ],
+  }}
+/>
+
+## Final Thoughts
+
+Setting up this home network was an invaluable learning experience, as my prior knowledge of networks was primarily theoretical. This project gave me the opportunity to gain hands-on experience and apply what I had learned in a practical context.
+
+\
+Each upgrade, from adding the ethernet switch to configuring the secondary router, highlighted the importance of optimizing for both performance and convenience to meet the demands of a growing smart home.
+
+\
+Looking back, every step of the setup was essential in helping me better understand how the networks operate, troubleshoot problems, and improve connectivity in a real-world setting.

@@ -7,4 +7,24 @@ import "./src/env.js";
 /** @type {import("next").NextConfig} */
 const config = {};
 
-export default config;
+const nextConfig = {
+  transpilePackages: ["next-mdx-remote"],
+  images: {
+    localPatterns: [
+      {
+        pathname: "/**",
+        search: "",
+      },
+    ],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**.pwallis.com/**",
+        port: "",
+        search: "",
+      },
+    ],
+  },
+};
+
+export default nextConfig;

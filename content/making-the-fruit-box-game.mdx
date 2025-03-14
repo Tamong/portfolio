@@ -1,0 +1,200 @@
+---
+title: "Making the Fruit Box Game"
+publishedAt: "2025-02-14"
+summary: "Development process of creating the Fruit Box game using React and TypeScript"
+tags: "Game Development, React, TypeScript"
+category: "Project"
+---
+
+The [Fruit Box](https://en.gamesaien.com/game/fruit_box/) game is a puzzle game by GameSaien where players need to select combinations of numbers that sum up to 10.
+This game was trending in Japan and Korea for a while, so I thought I would try to recreate the game using technologies that I am familiar with.
+The game is built using React and TypeScript, with a focus on performance optimization and clean code architecture.
+
+<Callout emoji="🍎">
+  You can try my version of the game [here!](/games/fruit-box)
+</Callout>
+
+### Game Mechanics
+
+The core gameplay revolves around these key mechanics:
+
+<Table
+  data={{
+    headers: [""],
+    rows: [
+      [
+        "A grid of numbers (apple) where each cell contains a value between 1-9",
+      ],
+      ["Players can select multiple cells by dragging to form a rectangle"],
+      ["Selected cells must sum to exactly 10"],
+      [
+        "The game ends when the board is cleared, no more valid combinations exist, or when the time runs out",
+      ],
+    ],
+  }}
+/>
+
+## Development Process
+
+The first thing that came to my mind was developing it using AI.
+I thought it would be a great use of AI development because games tend to be quite simple in its requirements and don't require any external context.
+
+\
+I started with [v0.dev](https://v0.dev), going until I ran out of the daily free usages.
+You can see my prompts [here](https://v0.dev/chat/japanese-grid-game-RjaJbJlSS3c).
+Most of the game logic was completed by the final iteration before the free usages ran out.
+I also explored displaying the available combinations because the number seemed to high, and used it to debug
+the issue where it would also display "fake" combinations showing diagonal combinations, or combinations that were "unreachable" without clearing out some neighboring cells first.
+
+<Image
+  src="/images/making-the-fruit-box-game/v0.png"
+  alt="final output from v0"
+  width={420}
+  height={420}
+/>
+<Caption>final output from v0</Caption>
+
+\
+I then used the files from v0 and moved it into my projects, and decided to use [Github Copilot](https://github.com/features/copilot) for the rest of the development.
+After about an hour of prompting, I got a working game!
+
+<Image
+  src="/images/making-the-fruit-box-game/complete.png"
+  alt="final game"
+  width={420}
+  height={420}
+/>
+<Caption>final game</Caption>
+
+\
+Although the game was "complete", there were so much more to do.
+Because the code is 100% written by AI, it lacked lots of things.
+For example, it has lots of unnecessary rerenders, doesn't work on mobile, and just little details missing everywhere.
+This was done with several more hours of prompting and manual edits to make it work like how I wanted it to.
+Now it has (almost) no unnecessary rerenders and it works all devices!
+
+\
+A little side effort after the game development, I decided to update my site to also include a "games" section where I can dynamically import all the games I develop in the future.
+
+```tsx
+//
+import { lazy } from "react";
+
+export const games = {
+  "fruit-box": {
+    title: "Fruit Box",
+    component: lazy(() => import("@/app/components/games/fruit-box/fruit-box")),
+  },
+  // Add more games here
+  // 'tetris': {
+  //   title: 'Tetris',
+  //   component: lazy(() => import('@/app/components/games/tetris/tetris')),
+  // },
+} as const;
+
+export type GameSlug = keyof typeof games;
+```
+
+<Caption>
+  This allows me to import only the game that the user actually wants to play!
+</Caption>
+
+### Component Architecture
+
+The game is structured into five components:
+
+#### Fruit-Box Component
+
+- The main entry point to the game
+- Keeps track of the game status, and display the game.
+
+#### Game-Stats Component
+
+- Made to reduce rerenders when timer ticks.
+- Only rerenders this component when timer ticks.
+
+#### Timer Component
+
+- Logic of the timer.
+- Displays the time left.
+
+#### Grid Component
+
+Most of the logic lives here:
+
+- Manages the core game logic and state
+- Handles mouse/touch interactions for desktop and mobile devices
+- Cell selection algorithm with validation
+- Update score and active combinations
+- Uses effect hooks to initialize the game
+- Implemented efficient cell rendering with memoization
+- Includes combination detection algorithm that validates all possible options
+
+#### Cell Component
+
+- Represents individual grid cells with fruit (apple) icons
+- Uses memo for performance optimization
+- Features conditional rendering based on cell state:
+  - Selected state (yellow background)
+  - Empty state (gray background)
+  - Normal state with fruit icon and number
+- Used lucide for the apple icon.
+
+---
+
+## Performance Optimization
+
+Several optimization techniques were implemented:
+
+- Used React.memo for all components to prevent unnecessary re-renders
+- Implemented useMemo and useCallback for complex calculations
+- Optimized the active combinations detection algorithm
+- Efficient state management for selection tracking
+
+<Table
+  data={{
+    headers: ["Optimization", "Impact"],
+    rows: [
+      [
+        "Cell Memoization",
+        "Only selected/updated cells re-render instead of all 170 cells",
+      ],
+      [
+        "Timer Isolation",
+        "Timer updates only re-render GameStats instead of entire game",
+      ],
+      [
+        "Selection Algorithm",
+        "Efficient rectangle validation without checking every cell",
+      ],
+    ],
+  }}
+/>
+
+## Challenges Faced
+
+Not necessarily challenges that I've had, but ones that the AI had:
+
+1. _**Combination Detection**_: Creating an efficient algorithm to detect all possible combinations that sum to 10. It took several prompts just to get rid of small bugs where it would show cells that were actually not a valid combination.
+
+2. _**Performance**_: The code written by AI had zero mind for performance. I had to go back in and add memoizations and ask it to try to minimize the rerenders.
+
+## Future Improvements
+
+Some cool enhancements that I would like make in the future:
+
+- Add sound effects
+- Adding animations for matched combinations
+
+\
+If you play the game and these are there, it means I did update the game!
+
+## Final Thoughts
+
+Building this game was actually very fun! Besides being able to play the game while developing, I could see the changes in real time and see how much better it performs, thanks to [react-scan](https://react-scan.com/).
+
+The project also demonstrated how TypeScript and linters can help catch potential issues early in game logic implementation, making the development process more robust and maintainable.
+
+<Callout emoji="🍎">
+  You can try my version of the game [here!](/games/fruit-box)
+</Callout>
