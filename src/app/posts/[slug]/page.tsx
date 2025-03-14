@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { CustomMDX } from "@/app/components/post/mdx";
-import { formatDate, getBlogPosts } from "@/app/lib/posts";
-import { metaData } from "@/app/config";
+import { CustomMDX } from "@/components/post/mdx";
+import { formatDate, getBlogPosts } from "@/lib/posts";
+import { metaData } from "@/config";
 
 // Define interfaces
 interface PostParams {
@@ -98,7 +98,7 @@ export default async function Blog({ params }: PageProps) {
       <h1 className="title mb-3 text-2xl font-medium tracking-tight">
         {post.metadata.title}
       </h1>
-      <div className="mb-8 mt-2 flex items-center justify-between">
+      <div className="mt-2 mb-8 flex items-center justify-between">
         <p className="text-sm">{formatDate(post.metadata.publishedAt)}</p>
       </div>
       <article className="text-stone-300">

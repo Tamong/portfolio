@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { formatDate, getBlogPosts } from "@/app/lib/posts";
+import { formatDate, getBlogPosts } from "@/lib/posts";
 
 export const metadata = {
   title: "Posts",
@@ -30,11 +30,11 @@ export default function Posts() {
               href={`/posts/${post.slug}`}
               prefetch={true}
             >
-              <div className="flex w-full flex-col items-start justify-between space-y-1 sm:flex-row sm:items-center sm:space-x-2 sm:space-y-0">
+              <div className="flex w-full flex-col items-start justify-between space-y-1 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-2">
                 <p className="tracking-tight text-white">
                   {post.metadata.title}
                 </p>
-                <p className="text-sm tabular-nums text-neutral-400">
+                <p className="text-sm text-neutral-400 tabular-nums">
                   {formatDate(post.metadata.publishedAt, false)}
                 </p>
               </div>

@@ -12,7 +12,7 @@ export default function NotFound() {
         404 - Page not found
       </h1>
       <p className="mb-4">
-        Oops! The page you&apos;re looking for doesn&apos;t exist yet.
+        {`Oops! The page you're looking for doesn't exist yet.`}
       </p>
     </section>
   );

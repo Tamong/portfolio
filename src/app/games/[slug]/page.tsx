@@ -1,8 +1,8 @@
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
-import { games, type GameSlug } from "@/app/lib/games";
+import { games, type GameSlug } from "@/lib/games";
 import type { Metadata } from "next";
-import { metaData } from "@/app/config";
+import { metaData } from "@/config";
 
 type Props = {
   params: Promise<{ slug: GameSlug }>;

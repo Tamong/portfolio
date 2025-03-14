@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { games } from "@/app/lib/games";
+import { games } from "@/lib/games";
 
 export const metadata = {
   title: "Games",

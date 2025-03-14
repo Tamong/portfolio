@@ -1,0 +1,229 @@
+---
+title: "MDX Guide"
+publishedAt: "2024-12-04"
+updatedAt: "2024-12-11"
+summary: "How to use MDX in writing posts"
+tags: "Resource, MDX, Format"
+category: "Resource"
+---
+
+This post is used as a resource for me to write mdx content on all blog posts;
+it will be updated every time I add new components into the custom MDX.
+
+\
+Some notes besides MDX formatting:
+
+## PARA Format
+
+- Project: Short term efforts in work
+- Area: Long term responsibility to manage
+- Resource: Topics that may be useful in the future
+- Archive: Inactive items outside of the three categories
+
+# h1 Heading
+
+```md
+# h1 Heading
+```
+
+## h2 Heading
+
+```md
+## h2 Heading
+```
+
+### h3 Heading
+
+```md
+### h3 Heading
+```
+
+#### h4 Heading
+
+```md
+#### h4 Heading
+```
+
+##### h5 Heading
+
+```md
+##### h5 Heading
+```
+
+**This is bold text**
+
+```md
+**This is bold text**
+```
+
+_This is italic text_
+
+```md
+_This is italic text_
+```
+
+<del> Strikethrough </del>
+```md
+<del> Strikethrough </del>
+```
+
+## Blockquotes
+
+> If today were the last day of my life, would I want to do what I am about to do today? – Steve Jobs
+
+```md
+> If today were the last day of my life, would I want to do what I am about to do today? – Steve Jobs
+```
+
+## Links
+
+[Next.js](https://nextjs.org), [pnpm](https://pnpm.io/)
+
+```
+[Next.js](https://nextjs.org), [pnpm](https://pnpm.io/)
+```
+
+## CodeBlocks
+
+```
+// This is commented-out code
+export default function HelloWorld() {
+  return (
+    <h1>Hello, World!</h1>
+  );
+}
+```
+
+## Images
+
+<Image
+  src="/opengraph-image.png"
+  alt="OpenGraph image"
+  width={640}
+  height={500}
+/>
+
+```tsx
+<Image
+  src="/opengraph-image.png"
+  alt="OpenGraph image"
+  width={640}
+  height={500}
+/>
+```
+
+## Image Grid
+
+<ImageGrid
+  columns={3}
+  images={[
+    { src: "/images/opengraph-image.png", alt: "Photo1", href: "#" },
+    { src: "/images/opengraph-image.png", alt: "Photo2", href: "#" },
+    { src: "/images/opengraph-image.png", alt: "Photo3" },
+  ]}
+/>
+
+```tsx
+<ImageGrid
+  columns={3} // Accepts 2, 3, or 4 columns
+  images={[
+    { src: "/opengraph-image.png", alt: "Photo1", href: "#" }, // 'href' is optional
+    { src: "/photos/photo2.jpg", alt: "Photo2", href: "#" },
+    { src: "/photos/photo3.jpg", alt: "Photo3" },
+  ]}
+/>
+```
+
+## Embeds
+
+### Tweets
+
+<StaticTweet id="1617979122625712128" />
+
+```tsx
+<StaticTweet id="1617979122625712128" />
+```
+
+### YouTube Videos
+
+<YouTube videoId="xefpHEg5UIA" />
+
+```tsx
+<YouTube videoId="xefpHEg5UIA" />
+```
+
+### Captions
+
+<Caption>
+  Captions that flow smoothly, making your content easy to read and visually
+  appealing with a clean look.
+</Caption>
+
+```tsx
+<Caption>
+  Captions that flow smoothly, making your content easy to read and visually
+  appealing with a clean look.
+</Caption>
+```
+
+## Tables
+
+<Table
+  data={{
+    headers: ["Title", "Description"],
+    rows: [
+      [
+        "First item",
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid perspiciatis repellat amet quos.",
+      ],
+      [
+        "Second item",
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid perspiciatis repellat amet quos.",
+      ],
+    ],
+  }}
+/>
+
+```tsx
+<Table
+  data={{
+    headers: ["Title", "Description"],
+    rows: [
+      [
+        "First item",
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid perspiciatis repellat amet quos.",
+      ],
+      [
+        "Second item",
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid perspiciatis repellat amet quos.",
+      ],
+    ],
+  }}
+/>
+```
+
+## Math Expressions
+
+[KaTeX](https://katex.org/)
+
+$
+\int_0^\infty e^{-x^2} dx = \frac{\sqrt{\pi}}{2}
+$
+
+```tsx
+$
+\int_0^\infty e^{-x^2} dx = \frac{\sqrt{\pi}}{2}
+$
+```
+
+## Callout
+
+<Callout emoji="🪄">
+  Callout component used to highlight some important information.
+</Callout>
+
+```tsx
+<Callout emoji="🪄">
+  Callout component used to highlight some important information.
+</Callout>
+```

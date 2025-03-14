@@ -5,9 +5,11 @@ import { type Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
-import Nav from "./components/nav";
-import Footer from "./components/footer";
-import { metaData } from "./config";
+import { TRPCReactProvider } from "@/trpc/react";
+
+import Nav from "@/components/nav";
+import Footer from "@/components/footer";
+import { metaData } from "@/config";
 
 export const metadata: Metadata = {
   metadataBase: new URL(metaData.baseUrl),
@@ -49,7 +51,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${GeistMono.className}`}>
+    <html lang="en" className={`dark ${GeistMono.className}`}>
       <head>
         <title>Philip Wallis</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -57,9 +59,11 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/favicon.ico" />
         <link rel="manifest" href="/manifest.json" />
       </head>
-      <body className="mx-auto mt-8 flex h-[97dvh] max-w-3xl flex-col px-4">
+      <body className="mx-auto mt-8 flex h-[97dvh] max-w-3xl flex-col bg-stone-900 px-4">
         <Nav />
-        <main className="mb-auto">{children}</main>
+        <main className="mb-auto">
+          <TRPCReactProvider>{children}</TRPCReactProvider>
+        </main>
         <Footer />
         <Analytics />
         <SpeedInsights />
