@@ -4,6 +4,7 @@ import { GeistMono } from "geist/font/mono";
 import { type Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Toaster } from "@/components/ui/sonner";
 
 import { TRPCReactProvider } from "@/trpc/react";
 
@@ -59,14 +60,17 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/favicon.ico" />
         <link rel="manifest" href="/manifest.json" />
       </head>
-      <body className="mx-auto mt-8 flex h-[97dvh] max-w-3xl flex-col bg-stone-900 px-4">
-        <Nav />
-        <main className="mb-auto">
-          <TRPCReactProvider>{children}</TRPCReactProvider>
-        </main>
-        <Footer />
+      <body className="bg-stone-900">
+        <div className="mx-auto mt-8 flex min-h-[97dvh] max-w-3xl flex-col px-4">
+          <Nav />
+          <main className="mb-auto">
+            <TRPCReactProvider>{children}</TRPCReactProvider>
+          </main>
+          <Footer />
+        </div>
         <Analytics />
         <SpeedInsights />
+        <Toaster />
       </body>
     </html>
   );

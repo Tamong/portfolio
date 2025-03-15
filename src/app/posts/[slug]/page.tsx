@@ -1,8 +1,15 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CustomMDX } from "@/components/post/mdx";
-import { formatDate, getBlogPosts } from "@/lib/posts";
+import { getBlogPosts } from "@/lib/posts";
+import { formatDate } from "@/lib/utils";
 import { metaData } from "@/config";
+
+import { Separator } from "@/components/ui/separator";
+
+import { auth } from "@/server/auth";
+import Comments from "@/app/_components/Comments";
+import { HydrateClient } from "@/trpc/server";
 
 // Define interfaces
 interface PostParams {
@@ -15,7 +22,7 @@ interface PageProps {
 
 // Update generateStaticParams
 export async function generateStaticParams(): Promise<PostParams[]> {
-  const posts = getBlogPosts();
+  const posts = await getBlogPosts();
   return posts.map((post) => ({
     slug: post.slug,
   }));
@@ -26,7 +33,8 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = getBlogPosts().find((post) => post.slug === slug);
+  const posts = await getBlogPosts();
+  const post = posts.find((post) => post.slug === slug);
 
   if (!post) {
     notFound();
@@ -63,47 +71,57 @@ export async function generateMetadata({
   };
 }
 
-export default async function Blog({ params }: PageProps) {
+export default async function PostPage({ params }: PageProps) {
+  const session = await auth();
   const { slug } = await params;
-  const post = getBlogPosts().find((post) => post.slug === slug);
+  const posts = await getBlogPosts();
+  const post = posts.find((post) => post.slug === slug);
 
   if (!post) {
     notFound();
   }
 
   return (
-    <section>
-      <script
-        type="application/ld+json"
-        suppressHydrationWarning
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
-            headline: post.metadata.title,
-            datePublished: post.metadata.publishedAt,
-            dateModified: post.metadata.publishedAt,
-            description: post.metadata.summary,
-            image: post.metadata.image
-              ? `${metaData.baseUrl}${post.metadata.image}`
-              : `/api/og?title=${encodeURIComponent(post.metadata.title)}`,
-            url: `${metaData.baseUrl}/blog/${post.slug}`,
-            author: {
-              "@type": "Person",
-              name: metaData.name,
-            },
-          }),
-        }}
-      />
-      <h1 className="title mb-3 text-2xl font-medium tracking-tight">
-        {post.metadata.title}
-      </h1>
-      <div className="mt-2 mb-8 flex items-center justify-between">
-        <p className="text-sm">{formatDate(post.metadata.publishedAt)}</p>
+    <div className="mx-auto px-4 py-8">
+      <section>
+        <script
+          type="application/ld+json"
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BlogPosting",
+              headline: post.metadata.title,
+              datePublished: post.metadata.publishedAt,
+              dateModified: post.metadata.publishedAt,
+              description: post.metadata.summary,
+              image: post.metadata.image
+                ? `${metaData.baseUrl}${post.metadata.image}`
+                : `/api/og?title=${encodeURIComponent(post.metadata.title)}`,
+              url: `${metaData.baseUrl}/blog/${post.slug}`,
+              author: {
+                "@type": "Person",
+                name: metaData.name,
+              },
+            }),
+          }}
+        />
+        <h1 className="title mb-3 text-2xl font-medium tracking-tight">
+          {post.metadata.title}
+        </h1>
+        <div className="mt-2 mb-8 flex items-center justify-between">
+          <p className="text-sm">{formatDate(post.metadata.publishedAt)}</p>
+        </div>
+        <article className="text-stone-300">
+          <CustomMDX source={post.content} />
+        </article>
+        <Separator className="my-8" />
+      </section>
+      <div className="mt-16">
+        <HydrateClient>
+          <Comments slug={slug} session={session} />
+        </HydrateClient>
       </div>
-      <article className="text-stone-300">
-        <CustomMDX source={post.content} />
-      </article>
-    </section>
+    </div>
   );
 }

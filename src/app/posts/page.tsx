@@ -1,13 +1,14 @@
 import Link from "next/link";
-import { formatDate, getBlogPosts } from "@/lib/posts";
+import { getBlogPosts } from "@/lib/posts";
+import { formatDate } from "@/lib/utils";
 
 export const metadata = {
   title: "Posts",
   description: "Philip Wallis blog posts",
 };
 
-export default function Posts() {
-  const allPosts = getBlogPosts();
+export default async function Posts() {
+  const allPosts = await getBlogPosts();
 
   return (
     <section className="flex flex-col gap-4">
@@ -35,7 +36,7 @@ export default function Posts() {
                   {post.metadata.title}
                 </p>
                 <p className="text-sm text-neutral-400 tabular-nums">
-                  {formatDate(post.metadata.publishedAt, false)}
+                  {formatDate(post.metadata.publishedAt)}
                 </p>
               </div>
               <div>
