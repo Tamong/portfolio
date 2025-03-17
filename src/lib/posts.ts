@@ -1,63 +1,38 @@
 "use server";
 
-/*
-code from https://github.com/1msirius/Nextfolio/blob/main/app/lib/posts.ts
-*/
+import { db } from "@/server/db";
+import { posts } from "@/server/db/schema";
+import { desc, eq, and } from "drizzle-orm";
 
-import fs from "fs";
-import path from "path";
-
-type Metadata = {
-  title: string;
-  publishedAt: string;
-  updatedAt?: string;
-  summary: string;
-  tags: string;
-  image?: string;
-  category: string;
-};
-
-function parseFrontmatter(fileContent: string) {
-  const frontmatterRegex = /---\s*([\s\S]*?)\s*---/;
-  const match = frontmatterRegex.exec(fileContent);
-  const frontMatterBlock = match![1];
-  const content = fileContent.replace(frontmatterRegex, "").trim();
-  const frontMatterLines = frontMatterBlock?.trim().split("\n");
-  const metadata: Partial<Metadata> = {};
-
-  frontMatterLines?.forEach((line) => {
-    const [key, ...valueArr] = line.split(": ");
-    let value = valueArr.join(": ").trim();
-    value = value.replace(/^['"](.*)['"]$/, "$1");
-    metadata[key?.trim() as keyof Metadata] = value;
-  });
-
-  return { metadata: metadata as Metadata, content };
-}
-
-function getMDXFiles(dir: string) {
-  return fs.readdirSync(dir).filter((file) => path.extname(file) === ".mdx");
-}
-
-function readMDXFile(filePath: string) {
-  const rawContent = fs.readFileSync(filePath, "utf-8");
-  return parseFrontmatter(rawContent);
-}
-
-function getMDXData(dir: string) {
-  const mdxFiles = getMDXFiles(dir);
-  return mdxFiles.map((file) => {
-    const { metadata, content } = readMDXFile(path.join(dir, file));
-    const slug = path.basename(file, path.extname(file));
-
-    return {
-      metadata,
-      slug,
-      content,
-    };
-  });
-}
+export type Post = typeof posts.$inferSelect;
 
 export async function getBlogPosts() {
-  return getMDXData(path.join(process.cwd(), "content/"));
+  return await db.query.posts.findMany({
+    where: and(eq(posts.published, true)),
+    orderBy: [desc(posts.publishedAt)],
+    with: {
+      author: {
+        columns: {
+          name: true,
+          image: true,
+        },
+      },
+    },
+  });
+}
+
+export async function getBlogPostBySlug(slug: string) {
+  const post = await db.query.posts.findFirst({
+    where: eq(posts.slug, slug),
+    with: {
+      author: {
+        columns: {
+          name: true,
+          image: true,
+        },
+      },
+    },
+  });
+
+  return post;
 }

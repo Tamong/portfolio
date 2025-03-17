@@ -1,31 +1,18 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CustomMDX } from "@/components/post/mdx";
-import { getBlogPosts } from "@/lib/posts";
+import { getBlogPostBySlug } from "@/lib/posts";
 import { formatDate } from "@/lib/utils";
 import { metaData } from "@/config";
 
 import { Separator } from "@/components/ui/separator";
 
 import { auth } from "@/server/auth";
-import Comments from "@/app/_components/Comments";
+import Comments from "@/app/_components/comments";
 import { HydrateClient } from "@/trpc/server";
-
-// Define interfaces
-interface PostParams {
-  slug: string;
-}
 
 interface PageProps {
   params: Promise<{ slug: string }>;
-}
-
-// Update generateStaticParams
-export async function generateStaticParams(): Promise<PostParams[]> {
-  const posts = await getBlogPosts();
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
 }
 
 // Update generateMetadata
@@ -33,19 +20,13 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const posts = await getBlogPosts();
-  const post = posts.find((post) => post.slug === slug);
+  const post = await getBlogPostBySlug(slug);
 
   if (!post) {
     notFound();
   }
 
-  const {
-    title,
-    publishedAt: publishedTime,
-    summary: description,
-    image,
-  } = post.metadata;
+  const { title, publishedAt, summary: description, image } = post;
 
   const ogImage =
     image ??
@@ -56,16 +37,16 @@ export async function generateMetadata({
     description,
     openGraph: {
       title,
-      description,
+      description: description ?? undefined,
       type: "article",
-      publishedTime,
+      publishedTime: publishedAt?.toISOString(),
       url: `${metaData.baseUrl}/posts/${post.slug}`,
       images: [{ url: ogImage }],
     },
     twitter: {
       card: "summary_large_image",
       title,
-      description,
+      description: description ?? undefined,
       images: [ogImage],
     },
   };
@@ -74,8 +55,7 @@ export async function generateMetadata({
 export default async function PostPage({ params }: PageProps) {
   const session = await auth();
   const { slug } = await params;
-  const posts = await getBlogPosts();
-  const post = posts.find((post) => post.slug === slug);
+  const post = await getBlogPostBySlug(slug);
 
   if (!post) {
     notFound();
@@ -91,26 +71,30 @@ export default async function PostPage({ params }: PageProps) {
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "BlogPosting",
-              headline: post.metadata.title,
-              datePublished: post.metadata.publishedAt,
-              dateModified: post.metadata.publishedAt,
-              description: post.metadata.summary,
-              image: post.metadata.image
-                ? `${metaData.baseUrl}${post.metadata.image}`
-                : `/api/og?title=${encodeURIComponent(post.metadata.title)}`,
+              headline: post.title,
+              datePublished: post.publishedAt?.toISOString(),
+              dateModified:
+                post.updatedAt?.toISOString() ??
+                post.publishedAt?.toISOString(),
+              description: post.summary,
+              image: post.image
+                ? `${metaData.baseUrl}${post.image}`
+                : `/api/og?title=${encodeURIComponent(post.title)}`,
               url: `${metaData.baseUrl}/blog/${post.slug}`,
               author: {
                 "@type": "Person",
-                name: metaData.name,
+                name: post.author?.name ?? metaData.name,
               },
             }),
           }}
         />
         <h1 className="title mb-3 text-2xl font-medium tracking-tight">
-          {post.metadata.title}
+          {post.title}
         </h1>
         <div className="mt-2 mb-8 flex items-center justify-between">
-          <p className="text-sm">{formatDate(post.metadata.publishedAt)}</p>
+          <p className="text-sm">
+            {post.publishedAt ? formatDate(post.publishedAt) : "Unpublished"}
+          </p>
         </div>
         <article className="text-stone-300">
           <CustomMDX source={post.content} />

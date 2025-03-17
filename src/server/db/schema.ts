@@ -5,6 +5,7 @@ import {
   pgTableCreator,
   primaryKey,
   text,
+  boolean,
   timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
@@ -21,21 +22,32 @@ export const createTable = pgTableCreator((name) => `portfolio_${name}`);
 export const posts = createTable(
   "post",
   {
-    id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
-    name: varchar("name", { length: 256 }),
-    createdById: varchar("created_by", { length: 255 })
+    id: varchar("id", { length: 255 })
       .notNull()
-      .references(() => users.id),
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    slug: varchar("slug", { length: 255 }).notNull().unique(),
+    title: varchar("title", { length: 255 }).notNull(),
+    content: text("content").notNull(),
+    summary: text("summary"),
+    tags: text("tags"),
+    category: varchar("category", { length: 100 }),
+    image: varchar("image", { length: 255 }),
+    publishedAt: timestamp("published_at", { withTimezone: true }),
     updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
       () => new Date(),
     ),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    authorId: varchar("author_id", { length: 255 })
+      .references(() => users.id)
+      .notNull(),
+    published: boolean("published").default(false).notNull(),
   },
-  (example) => ({
-    createdByIdIdx: index("created_by_idx").on(example.createdById),
-    nameIndex: index("name_idx").on(example.name),
+  (post) => ({
+    slugIdx: index("post_slug_idx").on(post.slug),
+    authorIdIdx: index("post_author_id_idx").on(post.authorId),
   }),
 );
 
@@ -156,11 +168,23 @@ export const comments = createTable(
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
   comments: many(comments),
+  posts: many(posts), // Add relation to posts
 }));
 
-// Define relations for comments after the table is defined
+// Add relations for posts
+export const postsRelations = relations(posts, ({ one, many }) => ({
+  author: one(users, { fields: [posts.authorId], references: [users.id] }),
+  comments: many(comments, { relationName: "postComments" }),
+}));
+
+// Update comments relations to include post relationship
 export const commentsRelations = relations(comments, ({ one, many }) => ({
   user: one(users, { fields: [comments.userId], references: [users.id] }),
+  post: one(posts, {
+    fields: [comments.postSlug],
+    references: [posts.slug],
+    relationName: "postComments",
+  }),
   parent: one(comments, {
     fields: [comments.parentId],
     references: [comments.id],
