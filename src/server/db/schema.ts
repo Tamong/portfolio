@@ -51,6 +51,7 @@ export const users = createTable("user", {
     withTimezone: true,
   }).default(sql`CURRENT_TIMESTAMP`),
   image: varchar("image", { length: 255 }),
+  role: varchar("role", { length: 20 }).default("visitor").notNull(),
 });
 
 export const accounts = createTable(
