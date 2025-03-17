@@ -23,6 +23,12 @@ const nextConfig = {
         port: "",
         search: "",
       },
+      {
+        protocol: "https",
+        hostname: "**.googleusercontent.com/**",
+        port: "",
+        search: "",
+      },
     ],
   },
 };
