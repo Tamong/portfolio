@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { CustomMDX } from "@/components/post/mdx";
 import { getBlogPostBySlug } from "@/lib/posts";
 import { formatDate } from "@/lib/utils";
@@ -102,9 +103,17 @@ export default async function PostPage({ params }: PageProps) {
         <Separator className="my-8" />
       </section>
       <div className="mt-16">
-        <HydrateClient>
-          <Comments slug={slug} session={session} />
-        </HydrateClient>
+        <Suspense
+          fallback={
+            <div className="text-muted-foreground text-sm">
+              Loading comments...
+            </div>
+          }
+        >
+          <HydrateClient>
+            <Comments slug={slug} session={session} />
+          </HydrateClient>
+        </Suspense>
       </div>
     </div>
   );
