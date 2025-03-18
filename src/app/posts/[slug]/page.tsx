@@ -89,18 +89,20 @@ export default async function PostPage({ params }: PageProps) {
             }),
           }}
         />
-        <h1 className="title mb-3 text-2xl font-medium tracking-tight">
-          {post.title}
-        </h1>
-        <div className="mt-2 mb-8 flex items-center justify-between">
-          <p className="text-sm">
-            {post.publishedAt ? formatDate(post.publishedAt) : "Unpublished"}
-          </p>
-        </div>
-        <article className="text-stone-300">
-          <CustomMDX source={post.content} />
-        </article>
-        <Separator className="my-8" />
+        <Suspense fallback={<div>Loading...</div>}>
+          <h1 className="title mb-3 text-2xl font-medium tracking-tight">
+            {post.title}
+          </h1>
+          <div className="mt-2 mb-8 flex items-center justify-between">
+            <p className="text-sm">
+              {post.publishedAt ? formatDate(post.publishedAt) : "Unpublished"}
+            </p>
+          </div>
+          <article className="text-stone-300">
+            <CustomMDX source={post.content} />
+          </article>
+          <Separator className="my-8" />
+        </Suspense>
       </section>
       <div className="mt-16">
         <Suspense
