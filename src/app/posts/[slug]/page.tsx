@@ -29,9 +29,9 @@ export async function generateMetadata({
 
   const { title, publishedAt, summary: description, image } = post;
 
-  const ogImage =
-    image ??
-    `${metaData.baseUrl}api/og?title=${encodeURIComponent(title)}&path=posts`;
+  const sanitizedTitle = title.replace(/[^a-zA-Z0-9 ]/g, " ");
+
+  const ogImage = `${metaData.baseUrl}api/og?title=${encodeURIComponent(sanitizedTitle)}&path=posts`; // image; <-- featured image in db
 
   return {
     title,
@@ -41,7 +41,7 @@ export async function generateMetadata({
       description: description ?? undefined,
       type: "article",
       publishedTime: publishedAt?.toISOString(),
-      url: `${metaData.baseUrl}/posts/${post.slug}`,
+      url: `${metaData.baseUrl}posts/${post.slug}`,
       images: [{ url: ogImage }],
     },
     twitter: {
