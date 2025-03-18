@@ -8,6 +8,7 @@ export default async function Home() {
         Vision, and Web Development.
       </p>
       <p>I have been learning new things and working on projects.</p>
+      <img src="https://cdn.pwallis.com/images/games/fruit-box.png" />
     </section>
   );
 }
