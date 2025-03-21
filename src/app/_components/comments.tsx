@@ -22,7 +22,20 @@ import {
 } from "@/components/ui/dialog";
 import type { Session } from "next-auth";
 
-// Remove the custom Session interface and use NextAuth's Session type
+// Define a proper interface for Comment type
+interface Comment {
+  id: string;
+  content: string;
+  createdAt: string | Date;
+  userId: string;
+  user: {
+    id: string;
+    name?: string | null;
+    image?: string | null;
+  };
+  isDeleted?: boolean;
+  replies?: Comment[];
+}
 
 interface CommentsProps {
   slug: string;
@@ -59,20 +72,18 @@ export default function Comments({
   });
 
   // Helper function to check if a comment appears to be deleted
-  const isCommentDeleted = (comment: any) => {
+  const isCommentDeleted = (comment: Comment): boolean => {
     return comment.isDeleted === true;
   };
 
   // Add a helper function to check if all comments in a thread are deleted
-  const shouldShowThread = (comment: any) => {
+  const shouldShowThread = (comment: Comment): boolean => {
     // If the parent comment is not deleted, we should always show the thread
     if (!isCommentDeleted(comment)) return true;
 
     // If parent is deleted, check if any replies exist and are not deleted
     if (comment.replies && comment.replies.length > 0) {
-      return comment.replies.some(
-        (reply: CommentsProps) => !isCommentDeleted(reply),
-      );
+      return comment.replies.some((reply: Comment) => !isCommentDeleted(reply));
     }
 
     // Parent is deleted and no replies or all replies are deleted
