@@ -3,6 +3,7 @@ import { type FC } from "react";
 import { cn } from "@/lib/utils";
 
 import "./prism.css";
+import "prismjs/components/prism-markdown";
 import "prismjs/components/prism-javascript";
 import "prismjs/components/prism-typescript";
 import "prismjs/components/prism-jsx";
