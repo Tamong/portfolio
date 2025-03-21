@@ -15,7 +15,7 @@ interface CodeProps {
 }
 
 export const CodeBlock: FC<CodeProps> = ({ children, className }) => {
-  const language = className?.replace(/^language-/, "") ?? "tsx";
+  const language = className?.replace(/^language-/, "") ?? "markdown";
 
   // Pre-highlight the code
   const grammar = Prism.languages[language];
