@@ -48,7 +48,7 @@ export async function GET(
   const allPosts = await getBlogPosts();
 
   allPosts.forEach((post) => {
-    const postUrl = `${BaseUrl}blog/${post.slug}`;
+    const postUrl = `${BaseUrl}posts/${post.slug}`;
     const categories = post.tags
       ? post.tags.split(",").map((tag) => tag.trim())
       : [];
