@@ -10,13 +10,13 @@ export default function Nav() {
         </h1>
       </Link>
       <div className="flex">
-        <Link href="/games">
+        <Link prefetch={true} href="/games">
           <Button variant="link">Games</Button>
         </Link>
-        <Link href="/posts">
+        <Link prefetch={true} href="/posts">
           <Button variant="link">Posts</Button>
         </Link>
-        <Link href="/resume">
+        <Link prefetch={true} href="/resume">
           <Button variant="link">Resume</Button>
         </Link>
       </div>

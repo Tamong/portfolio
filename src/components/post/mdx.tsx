@@ -1,7 +1,7 @@
 import React, { type ReactNode, type FC, type ComponentType } from "react";
 import Link from "next/link";
 import { MDXRemote, type MDXRemoteProps } from "next-mdx-remote/rsc";
-import { highlight } from "sugar-high";
+import { CodeBlock } from "./code-block";
 import { TweetComponent } from "./tweet";
 import { CaptionComponent } from "./caption";
 import { YouTubeComponent } from "./youtube";
@@ -52,34 +52,6 @@ const CustomLink: FC<CustomLinkProps> = (props) => {
     >
       {children}
     </a>
-  );
-};
-
-interface CodeProps {
-  children: string;
-  className?: string;
-}
-
-const Code: FC<CodeProps> = ({ children, className }) => {
-  const language = className?.replace(/^language-/, "") ?? "";
-
-  // Generate highlighted code and sanitize line breaks
-  const codeHTML = highlight(children.trim()).replace(/\n{2,}/g, "\n");
-
-  return (
-    <div className="relative my-4">
-      {language && (
-        <div className="absolute top-2 right-4 text-xs text-gray-500">
-          {language}
-        </div>
-      )}
-      <pre className="scrollbar-hidden overflow-x-auto rounded-lg border border-gray-700 bg-gray-900 p-4 text-sm leading-relaxed">
-        <code
-          className={`block ${language ? `language-${language}` : ""}`}
-          dangerouslySetInnerHTML={{ __html: codeHTML }}
-        />
-      </pre>
-    </div>
   );
 };
 
@@ -219,7 +191,7 @@ const components: MDXComponents = {
   StaticTweet: TweetComponent,
   Caption: CaptionComponent,
   YouTube: YouTubeComponent,
-  code: Code,
+  code: CodeBlock,
   Table,
   del: Strikethrough,
   Callout,
