@@ -58,6 +58,27 @@ export default function Comments({
     },
   });
 
+  // Helper function to check if a comment appears to be deleted
+  const isCommentDeleted = (comment: any) => {
+    return comment.isDeleted === true;
+  };
+
+  // Add a helper function to check if all comments in a thread are deleted
+  const shouldShowThread = (comment: any) => {
+    // If the parent comment is not deleted, we should always show the thread
+    if (!isCommentDeleted(comment)) return true;
+
+    // If parent is deleted, check if any replies exist and are not deleted
+    if (comment.replies && comment.replies.length > 0) {
+      return comment.replies.some(
+        (reply: CommentsProps) => !isCommentDeleted(reply),
+      );
+    }
+
+    // Parent is deleted and no replies or all replies are deleted
+    return false;
+  };
+
   const handleSubmitComment = () => {
     if (!comment.trim()) return;
 
@@ -229,12 +250,12 @@ export default function Comments({
         </p>
       ) : (
         <div className="space-y-6">
-          {commentsQuery.data?.map((comment) => (
+          {commentsQuery.data?.filter(shouldShowThread).map((comment) => (
             <div key={comment.id} className="comment-thread">
               {/* Main comment */}
               <div className="flex gap-4">
                 <Avatar className="ring-primary/10 ring-offset-background h-10 w-10 ring-1 ring-offset-1">
-                  {comment.user.image ? (
+                  {!isCommentDeleted(comment) && comment.user.image ? (
                     <AvatarImage
                       src={comment.user.image}
                       alt={comment.user.name ?? "User"}
@@ -243,31 +264,46 @@ export default function Comments({
                     />
                   ) : (
                     <AvatarFallback className="bg-primary/10 text-primary">
-                      {comment.user.name?.charAt(0).toUpperCase() ?? "U"}
+                      {!isCommentDeleted(comment)
+                        ? (comment.user.name?.charAt(0).toUpperCase() ?? "U")
+                        : "D"}
                     </AvatarFallback>
                   )}
                 </Avatar>
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <span className="font-medium">{comment.user.name}</span>
+                      <span className="font-medium">
+                        {!isCommentDeleted(comment)
+                          ? comment.user.name
+                          : "Deleted User"}
+                      </span>
                       <span className="text-xs text-gray-500">
                         {safeFormatDate(comment.createdAt)}
                       </span>
                     </div>
-                    {session?.user?.id === comment.userId && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-6 w-6 p-0 text-red-500"
-                        onClick={() => handleOpenDeleteDialog(comment.id)}
-                      >
-                        <X size={16} />
-                      </Button>
-                    )}
+                    {!isCommentDeleted(comment) &&
+                      session?.user?.id === comment.userId && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-6 w-6 p-0 text-red-500"
+                          onClick={() => handleOpenDeleteDialog(comment.id)}
+                        >
+                          <X size={16} />
+                        </Button>
+                      )}
                   </div>
-                  <p className="mt-1">{comment.content}</p>
-                  {isAuthenticated && (
+                  <p className="mt-1">
+                    {!isCommentDeleted(comment) ? (
+                      comment.content
+                    ) : (
+                      <span className="text-gray-500 italic">
+                        This comment has been deleted
+                      </span>
+                    )}
+                  </p>
+                  {isAuthenticated && !isCommentDeleted(comment) && (
                     <Button
                       variant={"ghost"}
                       size="sm"
@@ -317,7 +353,7 @@ export default function Comments({
                   {comment.replies.map((reply) => (
                     <div key={reply.id} className="flex gap-4">
                       <Avatar className="ring-primary/10 ring-offset-background h-8 w-8 ring-1 ring-offset-1">
-                        {reply.user.image ? (
+                        {!isCommentDeleted(reply) && reply.user.image ? (
                           <AvatarImage
                             src={reply.user.image}
                             alt={reply.user.name ?? "User"}
@@ -326,7 +362,10 @@ export default function Comments({
                           />
                         ) : (
                           <AvatarFallback className="bg-primary/10 text-primary">
-                            {reply.user.name?.charAt(0).toUpperCase() ?? "U"}
+                            {!isCommentDeleted(reply)
+                              ? (reply.user.name?.charAt(0).toUpperCase() ??
+                                "U")
+                              : "D"}
                           </AvatarFallback>
                         )}
                       </Avatar>
@@ -334,24 +373,35 @@ export default function Comments({
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <span className="font-medium">
-                              {reply.user.name}
+                              {!isCommentDeleted(reply)
+                                ? reply.user.name
+                                : "Deleted User"}
                             </span>
                             <span className="text-xs text-gray-500">
                               {safeFormatDate(reply.createdAt)}
                             </span>
                           </div>
-                          {session?.user?.id === reply.userId && (
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-6 w-6 p-0 text-red-500"
-                              onClick={() => handleOpenDeleteDialog(reply.id)}
-                            >
-                              <X size={16} />
-                            </Button>
-                          )}
+                          {!isCommentDeleted(reply) &&
+                            session?.user?.id === reply.userId && (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-6 w-6 p-0 text-red-500"
+                                onClick={() => handleOpenDeleteDialog(reply.id)}
+                              >
+                                <X size={16} />
+                              </Button>
+                            )}
                         </div>
-                        <p className="mt-1">{reply.content}</p>
+                        <p className="mt-1">
+                          {!isCommentDeleted(reply) ? (
+                            reply.content
+                          ) : (
+                            <span className="text-gray-500 italic">
+                              This comment has been deleted
+                            </span>
+                          )}
+                        </p>
                       </div>
                     </div>
                   ))}

@@ -70,7 +70,7 @@ export const commentRouter = createTRPCRouter({
       return { success: true, id: commentId };
     }),
 
-  // Delete a comment
+  // Delete a comment (soft delete now by setting isDeleted flag)
   delete: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
@@ -93,7 +93,11 @@ export const commentRouter = createTRPCRouter({
         });
       }
 
-      await ctx.db.delete(comments).where(eq(comments.id, input.id));
+      // Update the comment to mark it as deleted instead of removing it
+      await ctx.db
+        .update(comments)
+        .set({ isDeleted: true })
+        .where(eq(comments.id, input.id));
 
       return { success: true };
     }),

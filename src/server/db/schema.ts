@@ -156,6 +156,7 @@ export const comments = createTable(
     updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
       () => new Date(),
     ),
+    isDeleted: boolean("is_deleted").default(false).notNull(),
   },
   (comment) => ({
     userIdIdx: index("comment_user_id_idx").on(comment.userId),
