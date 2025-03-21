@@ -6,6 +6,7 @@ import {
   YouTube,
   LinkedIn,
   GMail,
+  RSS,
 } from "@/components/icons";
 
 export default function Footer() {
@@ -29,6 +30,9 @@ export default function Footer() {
         </Link>
         <Link href={socialLinks.youtube} target="_blank">
           <YouTube width={16} fill="#ffffff" />
+        </Link>
+        <Link href={`/rss.xml`} target="_self">
+          <RSS width={16} fill="#ffffff" />
         </Link>
       </div>
     </footer>
