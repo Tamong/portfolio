@@ -3,11 +3,9 @@
  * for Docker builds.
  */
 import "./src/env.js";
+import type { NextConfig } from "next";
 
-/** @type {import("next").NextConfig} */
-const config = {};
-
-const nextConfig = {
+const nextConfig: NextConfig = {
   transpilePackages: ["next-mdx-remote"],
   images: {
     localPatterns: [
