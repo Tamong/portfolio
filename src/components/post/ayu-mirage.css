@@ -1,0 +1,155 @@
+/**
+ * Ayu Mirage theme for Prism.js
+ * Based on original Ayu Mirage colors
+ */
+
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #cccac2; /* editor.fg */
+  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+  tab-size: 4;
+  hyphens: none;
+}
+
+.token.comment {
+  color: rgba(184, 207, 230, 0.5); /* syntax.comment */
+  font-style: italic;
+}
+
+.token.string,
+.token.char,
+.token.attr-value {
+  color: #d5ff80; /* syntax.string */
+}
+
+.token.regex,
+.token.important {
+  color: #95e6cb; /* syntax.regexp */
+}
+
+.token.number,
+.token.constant,
+.token.boolean {
+  color: #dfbfff; /* syntax.constant */
+}
+
+.token.punctuation {
+  color: #cccac2; /* editor.fg */
+}
+
+.token.operator,
+.token.entity,
+.token.url {
+  color: #f29e74; /* syntax.operator */
+}
+
+.token.keyword {
+  color: #ffad66; /* syntax.keyword */
+}
+
+.token.function {
+  color: #ffd173; /* syntax.func */
+}
+
+.token.class-name,
+.token.builtin {
+  color: #73d0ff; /* syntax.entity */
+}
+
+.token.tag {
+  color: #5ccfe6; /* syntax.tag */
+}
+
+.token.attr-name {
+  color: #ffd173; /* syntax.func */
+}
+
+.token.selector {
+  color: #73d0ff; /* syntax.entity */
+}
+
+.token.property {
+  color: #5ccfe6; /* syntax.tag */
+}
+
+.token.variable {
+  color: #cccac2; /* editor.fg */
+}
+
+.token.namespace {
+  color: #5ccfe6; /* syntax.tag */
+}
+
+.token.deleted {
+  color: #f27983; /* vcs.removed */
+}
+
+.token.inserted {
+  color: #87d96c; /* vcs.added */
+}
+
+/* Line highlighting */
+.line-highlight {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Line numbers */
+.line-numbers .line-numbers-rows {
+  border-right: 1px solid #1a1f29; /* editor.line */
+}
+
+.line-numbers-rows > span:before {
+  color: rgba(138, 145, 153, 0.4); /* editor.gutter.normal */
+}
+
+/* Bracket pair colorization - Pink > Blue > Yellow pattern */
+.token.punctuation.bracket-level-1,
+.token.punctuation.delimiter.bracket-level-1,
+.token.punctuation.brace-level-1,
+.token.punctuation.paren-level-1,
+.token.punctuation.bracket-level-1 {
+  color: #f28779; /* syntax.markup (Pink) */
+}
+
+.token.punctuation.bracket-level-2,
+.token.punctuation.delimiter.bracket-level-2,
+.token.punctuation.brace-level-2,
+.token.punctuation.paren-level-2,
+.token.punctuation.bracket-level-2 {
+  color: #5ccfe6; /* syntax.tag (Blue) */
+}
+
+.token.punctuation.bracket-level-3,
+.token.punctuation.delimiter.bracket-level-3,
+.token.punctuation.brace-level-3,
+.token.punctuation.paren-level-3,
+.token.punctuation.bracket-level-3 {
+  color: #ffd173; /* syntax.func (Yellow) */
+}
+
+.token.punctuation.bracket-level-4,
+.token.punctuation.delimiter.bracket-level-4,
+.token.punctuation.brace-level-4,
+.token.punctuation.paren-level-4,
+.token.punctuation.bracket-level-4 {
+  color: #f28779; /* syntax.markup (Pink again) */
+}
+
+.token.punctuation.bracket-level-5,
+.token.punctuation.delimiter.bracket-level-5,
+.token.punctuation.brace-level-5,
+.token.punctuation.paren-level-5,
+.token.punctuation.bracket-level-5 {
+  color: #5ccfe6; /* syntax.tag (Blue again) */
+}
+
+.token.punctuation.bracket-level-6,
+.token.punctuation.delimiter.bracket-level-6 {
+  color: #ffd173; /* syntax.func (Yellow again) */
+}
