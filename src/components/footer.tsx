@@ -15,7 +15,7 @@ export default function Footer() {
       <Link href="/">
         <h1 className="text-sm tracking-tight">© 2024 Philip Wallis</h1>
       </Link>
-      <div className="flex gap-4">
+      <div className="fill-foreground flex gap-4">
         <Link href={socialLinks.github} target="_blank">
           <GitHub width={16} />
         </Link>
