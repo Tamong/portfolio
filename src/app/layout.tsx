@@ -62,7 +62,7 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body className="bg-background">
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="mx-auto mt-8 flex min-h-[97dvh] max-w-3xl flex-col px-4">
             <Nav />
             <main className="mb-auto">
