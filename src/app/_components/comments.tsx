@@ -152,7 +152,7 @@ export default function Comments({
             <Button
               variant="link"
               onClick={() => signOut()}
-              className="rounded px-4 py-2 text-blue-500"
+              className="rounded px-4 py-2"
             >
               Sign Out
             </Button>
@@ -200,7 +200,7 @@ export default function Comments({
             <Button
               variant="link"
               onClick={() => signIn("google")}
-              className="rounded px-4 py-2 text-blue-500"
+              className="rounded px-4 py-2"
             >
               Sign in to comment
             </Button>

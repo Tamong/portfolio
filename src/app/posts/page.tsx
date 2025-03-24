@@ -19,22 +19,20 @@ export default async function Posts() {
         {allPosts.map((post) => (
           <Link
             key={post.slug}
-            className="mb-4 flex flex-col space-y-1 transition-opacity duration-200 hover:opacity-80"
+            className="mb-4 flex flex-col space-y-1 transition-opacity duration-200 hover:opacity-80 dark:text-stone-400"
             href={`/posts/${post.slug}`}
             prefetch={true}
           >
             <div className="flex w-full flex-col items-start justify-between space-y-1 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-2">
-              <p className="max-w-128 tracking-tight text-white">
+              <p className="text-foreground max-w-128 tracking-tight">
                 {post.title}
               </p>
-              <p className="text-sm text-neutral-400 tabular-nums">
+              <p className="text-sm tabular-nums">
                 {formatDate(post.publishedAt ?? post.createdAt)}
               </p>
             </div>
             <div>
-              <p className="max-w-md text-xs text-neutral-300">
-                {post.summary}
-              </p>
+              <p className="max-w-md text-xs">{post.summary}</p>
             </div>
           </Link>
         ))}

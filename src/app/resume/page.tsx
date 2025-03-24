@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export const metadata = {
@@ -11,11 +12,10 @@ export default function Resume() {
       <h1 className="text-3xl font-bold text-neutral-100">Resume</h1>
       <p>
         Click{" "}
-        <Link
-          className="text-blue-400 hover:text-blue-600 hover:underline"
-          href="/Philip_Wallis_Resume.pdf"
-        >
-          here
+        <Link href="/Philip_Wallis_Resume.pdf">
+          <Button className="px-0" variant="link">
+            here
+          </Button>
         </Link>{" "}
         if pdf does not load.
       </p>

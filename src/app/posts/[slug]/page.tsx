@@ -98,7 +98,7 @@ export default async function PostPage({ params }: PageProps) {
               {post.publishedAt ? formatDate(post.publishedAt) : "Unpublished"}
             </p>
           </div>
-          <article className="text-stone-300">
+          <article>
             <CustomMDX source={post.content} />
           </article>
           <Separator className="my-8" />

@@ -10,6 +10,7 @@ import { ImageGrid } from "./image-grid";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
 import "katex/dist/katex.min.css";
+import { Button } from "@/components/ui/button";
 
 interface CustomLinkProps
   extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
@@ -21,37 +22,36 @@ const CustomLink: FC<CustomLinkProps> = (props) => {
 
   if (href.startsWith("/")) {
     return (
-      <Link
-        href={href}
-        className="text-blue-400 transition-colors hover:text-blue-600 hover:underline"
-        {...rest}
-      >
-        {children}
+      <Link href={href} {...rest}>
+        <Button className="px-0" variant="link">
+          {children}
+        </Button>
       </Link>
     );
   }
 
   if (href.startsWith("#")) {
     return (
-      <a
-        className="text-blue-400 hover:text-blue-600 hover:underline"
-        {...rest}
-      >
-        {children}
-      </a>
+      <Link href={href} {...rest}>
+        <Button className="px-0" variant="link">
+          {children}
+        </Button>
+      </Link>
     );
   }
 
   return (
-    <a
+    <Link
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="external-link text-blue-400 hover:text-blue-600 hover:underline"
+      className="external-link"
       {...rest}
     >
-      {children}
-    </a>
+      <Button className="px-0" variant="link">
+        {children}
+      </Button>
+    </Link>
   );
 };
 
@@ -100,7 +100,7 @@ interface BlockquoteProps {
 
 function Blockquote({ children }: BlockquoteProps) {
   return (
-    <blockquote className="my-4 border-l-4 border-gray-600 pl-4 text-gray-300 italic">
+    <blockquote className="text-secondary-foreground my-4 border-l-4 border-gray-600 pl-4 italic">
       {children}
     </blockquote>
   );
@@ -116,9 +116,11 @@ interface CalloutProps {
 }
 
 const Callout: FC<CalloutProps> = ({ emoji, children }) => (
-  <div className="my-6 flex items-center rounded bg-blue-600/30 p-4 text-sm text-neutral-100">
+  <div className="bg-primary/25 my-6 flex items-center rounded p-4 text-sm">
     <div className="mr-4 flex w-8 items-center text-2xl">{emoji}</div>
-    <div className="callout w-full leading-relaxed">{children}</div>
+    <div className="callout text-foreground w-full leading-relaxed">
+      {children}
+    </div>
   </div>
 );
 
@@ -136,19 +138,19 @@ function createHeading(level: number): FC<{ children: string }> {
   const Heading: FC<{ children: string }> = ({ children }) => {
     const slug = slugify(children);
     const headingClasses: Record<number, string> = {
-      1: "text-4xl font-semibold mb-4 mt-8 text-stone-100",
-      2: "text-3xl font-semibold mb-3 mt-6 text-stone-100",
-      3: "text-2xl font-semibold mb-2 mt-4 text-stone-100",
-      4: "text-xl font-medium mb-2 mt-3 text-stone-200",
-      5: "text-base font-medium mb-1 mt-2 text-stone-300",
-      6: "text-sm font-medium mb-1 mt-1 text-stone-400",
+      1: "text-4xl font-semibold mb-4 mt-8",
+      2: "text-3xl font-semibold mb-3 mt-6",
+      3: "text-2xl font-semibold mb-2 mt-4",
+      4: "text-xl font-medium mb-2 mt-3",
+      5: "text-base font-medium mb-1 mt-2 text-secondary-foreground",
+      6: "text-sm font-medium mb-1 mt-1 text-secondary-foreground",
     };
 
     return React.createElement(
       `h${level}`,
       {
         id: slug,
-        className: `group relative ${headingClasses[level]}`,
+        className: `group text-foreground relative ${headingClasses[level]}`,
       },
       [
         React.createElement(
@@ -157,7 +159,7 @@ function createHeading(level: number): FC<{ children: string }> {
             href: `#${slug}`,
             key: `link-${slug}`,
             className:
-              "absolute -left-5 opacity-0 group-hover:opacity-100 transition-opacity no-underline text-gray-500",
+              "absolute -left-5 opacity-0 group-hover:opacity-100 transition-opacity no-underline",
             "aria-hidden": "true",
           },
           "#",

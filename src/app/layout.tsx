@@ -5,6 +5,7 @@ import { type Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "next-themes";
 
 import { TRPCReactProvider } from "@/trpc/react";
 
@@ -52,7 +53,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`dark ${GeistMono.className}`}>
+    <html lang="en" className={GeistMono.className} suppressHydrationWarning>
       <head>
         <title>Philip Wallis</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -60,17 +61,19 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/favicon.ico" />
         <link rel="manifest" href="/manifest.json" />
       </head>
-      <body className="bg-stone-900">
-        <div className="mx-auto mt-8 flex min-h-[97dvh] max-w-3xl flex-col px-4">
-          <Nav />
-          <main className="mb-auto">
-            <TRPCReactProvider>{children}</TRPCReactProvider>
-          </main>
-          <Footer />
-        </div>
-        <Analytics />
-        <SpeedInsights />
-        <Toaster />
+      <body className="bg-background">
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <div className="mx-auto mt-8 flex min-h-[97dvh] max-w-3xl flex-col px-4">
+            <Nav />
+            <main className="mb-auto">
+              <TRPCReactProvider>{children}</TRPCReactProvider>
+            </main>
+            <Footer />
+          </div>
+          <Analytics />
+          <SpeedInsights />
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );

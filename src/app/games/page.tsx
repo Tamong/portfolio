@@ -25,7 +25,7 @@ export default function Games() {
             href={`/games/${game.slug}`}
             prefetch={true}
           >
-            <p className="text-xl tracking-tight text-white">{game.title}</p>
+            <p className="text-xl tracking-tight">{game.title}</p>
 
             <Image
               className="rounded-lg"
