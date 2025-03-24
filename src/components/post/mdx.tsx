@@ -23,7 +23,7 @@ const CustomLink: FC<CustomLinkProps> = (props) => {
   if (href.startsWith("/")) {
     return (
       <Link href={href} {...rest}>
-        <Button className="px-0" variant="link">
+        <Button className="p-0" variant="link">
           {children}
         </Button>
       </Link>
@@ -33,7 +33,7 @@ const CustomLink: FC<CustomLinkProps> = (props) => {
   if (href.startsWith("#")) {
     return (
       <Link href={href} {...rest}>
-        <Button className="px-0" variant="link">
+        <Button className="p-0" variant="link">
           {children}
         </Button>
       </Link>
@@ -48,7 +48,7 @@ const CustomLink: FC<CustomLinkProps> = (props) => {
       className="external-link"
       {...rest}
     >
-      <Button className="px-0" variant="link">
+      <Button className="p-0" variant="link">
         {children}
       </Button>
     </Link>
