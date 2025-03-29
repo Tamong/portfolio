@@ -31,6 +31,7 @@ const nextConfig: NextConfig = {
   },
   async rewrites() {
     return [
+      { source: "/llms.txt", destination: "/llm" },
       { source: "/rss.xml", destination: "/feed/rss.xml" },
       { source: "/atom.xml", destination: "/feed/atom.xml" },
       { source: "/feed.json", destination: "/feed/feed.json" },
