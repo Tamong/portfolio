@@ -5,7 +5,7 @@ import { metaData } from "@/config";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const { title, description, details } = metaData;
+  const { title, description, details, baseUrl } = metaData;
 
   const posts = await getBlogPosts();
 
@@ -22,18 +22,18 @@ ${details}
 
 ## Blog Posts
 
-${posts.map((post) => `- [${post.title}](https://pwallis.com/posts/${post.slug}): ${post.summary}`).join("\n")}
+${posts.map((post) => `- [${post.title}](${baseUrl}posts/${post.slug}): ${post.summary}`).join("\n")}
 
 ## Games
 
 ${Object.entries(games)
-  .map(([slug, { title }]) => `- [${title}](https://pwallis.com/games/${slug})`)
+  .map(([slug, { title }]) => `- [${title}](${baseUrl}games/${slug})`)
   .join("\n")}
         `;
 
   return new NextResponse(content, {
     headers: {
-      "Content-Type": "text/markdown",
+      "Content-Type": "text/plain",
     },
   });
 }
