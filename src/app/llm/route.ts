@@ -15,6 +15,11 @@ export async function GET() {
 
 ${details}
 
+## Resume 
+
+[PDF](https://pwallis.com/resume.pdf)
+[Page](https://pwallis.com/resume)
+
 ## Blog Posts
 
 ${posts.map((post) => `- [${post.title}](https://pwallis.com/posts/${post.slug}): ${post.summary}`).join("\n")}
