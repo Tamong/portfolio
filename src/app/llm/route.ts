@@ -17,7 +17,7 @@ ${details}
 
 ## Resume 
 
-[PDF](https://pwallis.com/resume.pdf)
+[PDF](https://pwallis.com/Philip_Wallis_Resume.pdf)
 [Page](https://pwallis.com/resume)
 
 ## Blog Posts
