@@ -93,6 +93,10 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+
+    /* Theme toggle view transitions */
+    --theme-toggle-x: 50%;
+    --theme-toggle-y: 50%;
   }
   .dark {
     --background: oklch(0.216 0.006 56.043);
@@ -119,6 +123,43 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+  }
+}
+
+@keyframes theme-fade-out {
+  from {
+    clip-path: circle(0% at var(--theme-toggle-x) var(--theme-toggle-y));
+  }
+  to {
+    clip-path: circle(150% at var(--theme-toggle-x) var(--theme-toggle-y));
+  }
+}
+
+@keyframes theme-fade-in {
+  from {
+    clip-path: circle(0% at var(--theme-toggle-x) var(--theme-toggle-y));
+  }
+  to {
+    clip-path: circle(150% at var(--theme-toggle-x) var(--theme-toggle-y));
+  }
+}
+
+::view-transition-old(theme-toggle) {
+  animation: none;
+  z-index: 1;
+}
+
+::view-transition-new(theme-toggle) {
+  animation: 750ms cubic-bezier(0.75, 0, 0.25, 1) theme-fade-out forwards;
+  z-index: 2;
+}
+
+/* Prevent flickering during transitions in Firefox */
+@media (prefers-reduced-motion) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
   }
 }
 
