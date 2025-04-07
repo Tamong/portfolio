@@ -7,7 +7,7 @@ export const metadata = {
   description: "Philip Wallis blog posts",
 };
 
-export const revalidate = 60;
+export const revalidate = 86400;
 
 export default async function Posts() {
   const allPosts = await getBlogPosts();
