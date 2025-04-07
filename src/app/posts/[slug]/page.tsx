@@ -89,7 +89,7 @@ export default async function PostPage({ params }: PageProps) {
             }),
           }}
         />
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense>
           <h1 className="title mb-3 text-2xl font-medium tracking-tight">
             {post.title}
           </h1>
