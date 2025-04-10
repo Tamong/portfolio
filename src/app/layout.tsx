@@ -2,12 +2,11 @@ import "@/styles/globals.css";
 
 import { GeistMono } from "geist/font/mono";
 import { type Metadata } from "next";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider } from "next-themes";
 
+import { ThemeProvider } from "next-themes";
 import { TRPCReactProvider } from "@/trpc/react";
+import { PostHogProvider } from "./providers";
 
 import Nav from "@/components/nav";
 import Footer from "@/components/footer";
@@ -62,18 +61,18 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body className="bg-background">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="mx-auto mt-8 flex min-h-[97dvh] max-w-3xl flex-col px-4">
-            <Nav />
-            <main className="mb-auto">
-              <TRPCReactProvider>{children}</TRPCReactProvider>
-            </main>
-            <Footer />
-          </div>
-          <Analytics />
-          <SpeedInsights />
-          <Toaster />
-        </ThemeProvider>
+        <PostHogProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <div className="mx-auto mt-8 flex min-h-[97dvh] max-w-3xl flex-col px-4">
+              <Nav />
+              <main className="mb-auto">
+                <TRPCReactProvider>{children}</TRPCReactProvider>
+              </main>
+              <Footer />
+            </div>
+            <Toaster />
+          </ThemeProvider>
+        </PostHogProvider>
       </body>
     </html>
   );
