@@ -26,7 +26,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Badge } from "@/components/ui/badge";
 
 export default function AdminPosts() {
   const router = useRouter();
@@ -88,14 +87,13 @@ export default function AdminPosts() {
                 <TableCell className="font-medium">{post.title}</TableCell>
                 <TableCell>
                   {post.published ? (
-                    <Badge
-                      variant="default"
-                      className="bg-green-600 hover:bg-green-700"
-                    >
+                    <div className="flex items-center justify-center rounded border border-green-600 bg-green-600 px-1 py-0.5 text-xs">
                       Published
-                    </Badge>
+                    </div>
                   ) : (
-                    <Badge variant="outline">Draft</Badge>
+                    <div className="flex items-center justify-center rounded border px-1 py-0.5 text-xs">
+                      Draft
+                    </div>
                   )}
                 </TableCell>
                 <TableCell>

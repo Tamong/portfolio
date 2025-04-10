@@ -207,7 +207,12 @@ export const CustomMDX: FC<MDXRemoteProps> = (props) => {
   return (
     <MDXRemote
       {...props}
-      components={{ ...components, ...(props.components ?? {}) }}
+      components={
+        {
+          ...components,
+          ...(props.components ?? {}),
+        } as MDXRemoteProps["components"]
+      }
       options={{
         mdxOptions: {
           remarkPlugins: [remarkMath],
