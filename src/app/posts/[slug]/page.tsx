@@ -27,7 +27,7 @@ export async function generateMetadata({
     notFound();
   }
 
-  const { title, publishedAt, summary: description, image } = post;
+  const { title, publishedAt, summary: description } = post; // image; // <-- featured image in db
 
   const sanitizedTitle = title.replace(/[^a-zA-Z0-9 ]/g, " ");
 

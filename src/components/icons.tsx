@@ -96,6 +96,7 @@ export function RSS(props: React.SVGProps<SVGSVGElement>): React.ReactElement {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
+      {...props}
     >
       <path d="M4 11a9 9 0 0 1 9 9" />
       <path d="M4 4a16 16 0 0 1 16 16" />
