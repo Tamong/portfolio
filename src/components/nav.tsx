@@ -65,7 +65,7 @@ export default function Nav() {
                   className="w-full"
                 >
                   <Button
-                    variant="ghost"
+                    variant="link"
                     className="w-full justify-center text-lg"
                     onClick={() => setIsDrawerOpen(false)}
                   >
