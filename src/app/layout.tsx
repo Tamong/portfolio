@@ -11,6 +11,7 @@ import { PostHogProvider } from "./providers";
 import Nav from "@/components/nav";
 import Footer from "@/components/footer";
 import { metaData } from "@/config";
+import ParticleEmitterWrapper from "@/components/effects/particle-emitter-wrapper";
 
 export const metadata: Metadata = {
   metadataBase: new URL(metaData.baseUrl),
@@ -63,6 +64,7 @@ export default function RootLayout({
       <body className="bg-background">
         <PostHogProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <ParticleEmitterWrapper />
             <div className="mx-auto mt-8 flex min-h-[97dvh] max-w-3xl flex-col px-4">
               <Nav />
               <main className="mb-auto">
