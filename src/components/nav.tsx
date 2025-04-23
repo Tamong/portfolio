@@ -33,7 +33,7 @@ export default function Nav() {
       </Link>
 
       {/* Desktop navigation */}
-      <div className="hidden items-center md:flex">
+      <div className="hidden items-center sm:flex">
         {navLinks.map((link) => (
           <Link key={link.href} prefetch={true} href={link.href}>
             <Button variant="link">{link.label}</Button>
@@ -43,7 +43,7 @@ export default function Nav() {
       </div>
 
       {/* Mobile navigation */}
-      <div className="flex items-center md:hidden">
+      <div className="flex items-center sm:hidden">
         <ThemeToggle />
         <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
           <DrawerTrigger asChild>
