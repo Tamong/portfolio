@@ -28,7 +28,7 @@ export async function generateMetadata({
   }
 
   const { title, publishedAt, summary } = post; // image; // <-- featured image in db
-  const description = summary || `Read ${title} on ${metaData.name}'s blog`; // Fallback description if summary is empty
+  const description = summary ?? `Read ${title} on ${metaData.name}'s blog`; // Fallback description if summary is empty
 
   const sanitizedTitle = title.replace(/[^a-zA-Z0-9 ]/g, " ");
 
@@ -64,7 +64,7 @@ export default async function PostPage({ params }: PageProps) {
   }
 
   const postDescription =
-    post.summary || `Read ${post.title} on ${metaData.name}'s blog`;
+    post.summary ?? `Read ${post.title} on ${metaData.name}'s blog`;
 
   return (
     <div className="mx-auto py-8">
