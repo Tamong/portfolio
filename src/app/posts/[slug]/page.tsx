@@ -27,7 +27,8 @@ export async function generateMetadata({
     notFound();
   }
 
-  const { title, publishedAt, summary: description } = post; // image; // <-- featured image in db
+  const { title, publishedAt, summary } = post; // image; // <-- featured image in db
+  const description = summary || `Read ${title} on ${metaData.name}'s blog`; // Fallback description if summary is empty
 
   const sanitizedTitle = title.replace(/[^a-zA-Z0-9 ]/g, " ");
 
@@ -38,7 +39,7 @@ export async function generateMetadata({
     description,
     openGraph: {
       title,
-      description: description ?? undefined,
+      description,
       type: "article",
       publishedTime: publishedAt?.toISOString(),
       url: `${metaData.baseUrl}posts/${post.slug}`,
@@ -47,7 +48,7 @@ export async function generateMetadata({
     twitter: {
       card: "summary_large_image",
       title,
-      description: description ?? undefined,
+      description,
       images: [ogImage],
     },
   };
@@ -61,6 +62,9 @@ export default async function PostPage({ params }: PageProps) {
   if (!post) {
     notFound();
   }
+
+  const postDescription =
+    post.summary || `Read ${post.title} on ${metaData.name}'s blog`;
 
   return (
     <div className="mx-auto py-8">
@@ -77,11 +81,11 @@ export default async function PostPage({ params }: PageProps) {
               dateModified:
                 post.updatedAt?.toISOString() ??
                 post.publishedAt?.toISOString(),
-              description: post.summary,
+              description: postDescription,
               image: post.image
                 ? `${metaData.baseUrl}${post.image}`
-                : `/api/og?title=${encodeURIComponent(post.title)}`,
-              url: `${metaData.baseUrl}/blog/${post.slug}`,
+                : `${metaData.baseUrl}api/og?title=${encodeURIComponent(post.title)}`,
+              url: `${metaData.baseUrl}posts/${post.slug}`,
               author: {
                 "@type": "Person",
                 name: post.author?.name ?? metaData.name,
