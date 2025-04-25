@@ -13,6 +13,8 @@ import Footer from "@/components/footer";
 import { metaData } from "@/config";
 import ParticleEmitterWrapper from "@/components/effects/particle-emitter-wrapper";
 
+export const experimental_ppr = true;
+
 export const metadata: Metadata = {
   metadataBase: new URL(metaData.baseUrl),
   title: {

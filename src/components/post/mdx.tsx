@@ -153,19 +153,19 @@ function createHeading(level: number): FC<{ children: string }> {
         className: `group text-foreground relative ${headingClasses[level]}`,
       },
       [
+        children,
         React.createElement(
           "a",
           {
             href: `#${slug}`,
             key: `link-${slug}`,
             className:
-              "absolute -left-5 opacity-0 group-hover:opacity-100 transition-opacity no-underline",
-            "aria-hidden": "true",
+              "ml-2 text-gray-400 opacity-0 hover:opacity-100 group-hover:opacity-70 transition-opacity",
+            "aria-label": `Link to ${children}`,
           },
           "#",
         ),
       ],
-      children,
     );
   };
   Heading.displayName = `Heading${level}`;

@@ -63,7 +63,7 @@ export default async function PostPage({ params }: PageProps) {
   }
 
   return (
-    <div className="mx-auto px-4 py-8">
+    <div className="mx-auto py-8">
       <section>
         <script
           type="application/ld+json"
