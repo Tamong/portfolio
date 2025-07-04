@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { type ParticleEmitterConfig } from "./particle-emitter";
+import { useParticles } from "./particle-context";
 
 // Dynamic import with no SSR for the particle effect
 const ParticleEmitter = dynamic(
@@ -12,15 +13,15 @@ const ParticleEmitter = dynamic(
 // Custom configuration for the particle emitter
 const particleConfig: ParticleEmitterConfig = {
   // Particle settings
-  numParticles: 5000,
+  numParticles: 100,
   particleMinSize: 5,
   particleMaxSize: 10,
   particleSpeedMultiplier: 0.5,
   particleEmissionRate: 0.125,
-  particleOrbitalRadius: 25,
+  particleOrbitalRadius: 10,
 
   // Cursor settings
-  cursorRadius: 15,
+  cursorRadius: 5,
   cursorOpacity: 0.9,
 
   // Spring physics settings
@@ -33,6 +34,12 @@ const particleConfig: ParticleEmitterConfig = {
 };
 
 export default function ParticleEmitterWrapper() {
+  const { isEnabled } = useParticles();
+
+  if (!isEnabled) {
+    return null;
+  }
+
   return (
     <div className="hidden sm:block">
       <ParticleEmitter config={particleConfig} />

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { ParticleToggle } from "@/components/particle-toggle";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import {
@@ -39,6 +40,7 @@ export default function Nav() {
             <Button variant="link">{link.label}</Button>
           </Link>
         ))}
+        <ParticleToggle />
         <ThemeToggle />
       </div>
 

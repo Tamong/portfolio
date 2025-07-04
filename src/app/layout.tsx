@@ -12,6 +12,7 @@ import Nav from "@/components/nav";
 import Footer from "@/components/footer";
 import { metaData } from "@/config";
 import ParticleEmitterWrapper from "@/components/effects/particle-emitter-wrapper";
+import { ParticleProvider } from "@/components/effects/particle-context";
 
 export const experimental_ppr = true;
 
@@ -66,14 +67,16 @@ export default function RootLayout({
       <body className="bg-background">
         <PostHogProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <ParticleEmitterWrapper />
-            <div className="mx-auto mt-8 flex min-h-[97dvh] max-w-3xl flex-col px-4">
-              <Nav />
-              <main className="mb-auto">
-                <TRPCReactProvider>{children}</TRPCReactProvider>
-              </main>
-              <Footer />
-            </div>
+            <ParticleProvider>
+              <ParticleEmitterWrapper />
+              <div className="mx-auto mt-8 flex min-h-[97dvh] max-w-3xl flex-col px-4">
+                <Nav />
+                <main className="mb-auto">
+                  <TRPCReactProvider>{children}</TRPCReactProvider>
+                </main>
+                <Footer />
+              </div>
+            </ParticleProvider>
             <Toaster />
           </ThemeProvider>
         </PostHogProvider>
