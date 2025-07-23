@@ -1,13 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { api } from "@/trpc/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CustomMDX } from "@/components/post/mdx";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Calendar as CalendarIcon } from "lucide-react";
@@ -20,6 +19,17 @@ import {
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { toast } from "sonner";
+import dynamic from "next/dynamic";
+
+// Debounce hook for preview
+function useDebounce<T>(value: T, delay: number): T {
+  const [debounced, setDebounced] = useState<T>(value);
+  useEffect(() => {
+    const handler = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(handler);
+  }, [value, delay]);
+  return debounced;
+}
 
 export default function PostEditor() {
   const router = useRouter();
@@ -38,6 +48,9 @@ export default function PostEditor() {
   const [customSlug, setCustomSlug] = useState("");
   const [useCustomSlug, setUseCustomSlug] = useState(false);
   const [postId, setPostId] = useState<string | null>(null);
+
+  // Debounced content for preview
+  const debouncedContent = useDebounce(content, 300);
 
   // Fetch post data if slug is provided
   const { data: postData } = api.post.getBySlug.useQuery(
@@ -119,6 +132,10 @@ export default function PostEditor() {
       });
     }
   };
+
+  const MdxPreview = dynamic(() => import("@/components/post/MdxPreview"), {
+    ssr: false,
+  });
 
   return (
     <div className="container mx-auto py-6">
@@ -268,7 +285,9 @@ export default function PostEditor() {
             </div>
             <div className="max-h-[600px] overflow-auto rounded-md border p-4">
               <div className="prose prose-invert max-w-none">
-                <CustomMDX source={content} />
+                <Suspense fallback={<div>Loading preview...</div>}>
+                  <MdxPreview source={debouncedContent} />
+                </Suspense>
               </div>
             </div>
           </div>
@@ -286,7 +305,9 @@ export default function PostEditor() {
         <TabsContent value="preview" className="mt-0">
           <div className="max-h-[600px] overflow-auto rounded-md border p-4">
             <div className="prose prose-invert max-w-none">
-              <CustomMDX source={content} />
+              <Suspense fallback={<div>Loading preview...</div>}>
+                <MdxPreview source={debouncedContent} />
+              </Suspense>
             </div>
           </div>
         </TabsContent>
