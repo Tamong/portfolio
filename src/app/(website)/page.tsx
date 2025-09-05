@@ -7,7 +7,7 @@ export default async function Home() {
         <div className="flex flex-col gap-4">
           <p>
             {`Hello! I am Philip Wallis, a software engineer based in Texas,
-            USA.`}
+            USA (Currently in Montgomery, Alabama, USA).`}
           </p>
 
           <p>
@@ -15,7 +15,12 @@ export default async function Home() {
             Vision, and modern Web Development.`}
           </p>
           <p>
-            {`I'm taking the next step in my academic path by pursuing a Master's
+            {`I recently started a new role at Hyundai Mobis as an IT Specialist,
+            where I work on enterprise security platforms, IT asset management,
+            and ensuring compliance with global standards.`}
+          </p>
+          <p>
+            {`I am also taking the next step in my academic path by pursuing a Master's
             degree in Computer Science at the Georgia Institute of Technology (Georgia Tech).`}
           </p>
         </div>
