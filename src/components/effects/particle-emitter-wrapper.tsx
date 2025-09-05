@@ -14,8 +14,8 @@ const ParticleEmitter = dynamic(
 const particleConfig: ParticleEmitterConfig = {
   // Particle settings
   numParticles: 100,
-  particleMinSize: 5,
-  particleMaxSize: 10,
+  particleMinSize: 3,
+  particleMaxSize: 5,
   particleSpeedMultiplier: 0.5,
   particleEmissionRate: 0.125,
   particleOrbitalRadius: 10,
