@@ -8,8 +8,6 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   transpilePackages: ["next-mdx-remote"],
   experimental: {
-    ppr: "incremental",
-    reactCompiler: true,
     viewTransition: true,
   },
   images: {
