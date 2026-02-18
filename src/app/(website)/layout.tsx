@@ -6,7 +6,8 @@ import { Toaster } from "@/components/ui/sonner";
 
 import { ThemeProvider } from "next-themes";
 import { TRPCReactProvider } from "@/trpc/react";
-import { PostHogProvider } from "./providers";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import Nav from "@/components/nav";
 import Footer from "@/components/footer";
@@ -65,21 +66,21 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body className="bg-background">
-        <PostHogProvider>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <ParticleProvider>
-              <ParticleEmitterWrapper />
-              <div className="mx-auto mt-8 flex min-h-[97dvh] max-w-3xl flex-col px-4">
-                <Nav />
-                <main className="mb-auto">
-                  <TRPCReactProvider>{children}</TRPCReactProvider>
-                </main>
-                <Footer />
-              </div>
-            </ParticleProvider>
-            <Toaster />
-          </ThemeProvider>
-        </PostHogProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ParticleProvider>
+            <ParticleEmitterWrapper />
+            <div className="mx-auto mt-8 flex min-h-[97dvh] max-w-3xl flex-col px-4">
+              <Nav />
+              <main className="mb-auto">
+                <TRPCReactProvider>{children}</TRPCReactProvider>
+              </main>
+              <Footer />
+            </div>
+          </ParticleProvider>
+          <Toaster />
+        </ThemeProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
