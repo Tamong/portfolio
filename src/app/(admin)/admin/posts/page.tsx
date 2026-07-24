@@ -115,6 +115,7 @@ export default function AdminPosts() {
                 <TableHead className="w-28">Status</TableHead>
                 <TableHead className="w-36">Published</TableHead>
                 <TableHead className="w-36">Updated</TableHead>
+                <TableHead className="w-20 text-right">Views</TableHead>
                 <TableHead className="w-32 text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -148,20 +149,25 @@ export default function AdminPosts() {
                   <TableCell className="text-muted-foreground text-sm">
                     {post.updatedAt ? formatDate(post.updatedAt) : "—"}
                   </TableCell>
+                  <TableCell className="text-muted-foreground text-right text-sm tabular-nums">
+                    {post.views.toLocaleString()}
+                  </TableCell>
                   <TableCell
                     className="text-right"
                     onClick={(e) => e.stopPropagation()}
                   >
                     <div className="flex justify-end gap-1">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-8 w-8 p-0"
-                        title="View"
-                        onClick={() => router.push(`/posts/${post.slug}`)}
-                      >
-                        <Eye className="h-4 w-4" />
-                      </Button>
+                      {post.published && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-8 w-8 p-0"
+                          title="View"
+                          onClick={() => router.push(`/posts/${post.slug}`)}
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                      )}
                       <Button
                         variant="ghost"
                         size="sm"
@@ -216,7 +222,7 @@ export default function AdminPosts() {
               ))}
               {posts.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={5} className="py-10 text-center">
+                  <TableCell colSpan={6} className="py-10 text-center">
                     <span className="text-muted-foreground">
                       {query || status !== "all"
                         ? "No posts match the filter."

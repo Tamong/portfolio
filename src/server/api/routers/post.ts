@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
+import { revalidatePath } from "next/cache";
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -8,6 +9,23 @@ import {
 import { posts } from "@/server/db/schema";
 import { and, desc, eq, like, lte, sql } from "drizzle-orm";
 import { slugify } from "@/lib/utils";
+
+/**
+ * Regenerates the statically-cached pages that show post content. Called
+ * after create/update/delete so published pages stay static until the next
+ * save (never on views/comments).
+ */
+function revalidatePostPages(...slugs: (string | undefined)[]) {
+  revalidatePath("/posts");
+  for (const slug of slugs) {
+    if (slug) revalidatePath(`/posts/${slug}`);
+  }
+  revalidatePath("/sitemap.xml");
+  revalidatePath("/llm");
+  for (const format of ["rss.xml", "atom.xml", "feed.json"]) {
+    revalidatePath(`/feed/${format}`);
+  }
+}
 
 const postInputSchema = z.object({
   title: z.string().min(1).max(255),
@@ -131,6 +149,8 @@ export const postRouter = createTRPCRouter({
         })
         .returning();
 
+      revalidatePostPages(slug);
+
       return post[0];
     }),
 
@@ -174,6 +194,9 @@ export const postRouter = createTRPCRouter({
         .where(eq(posts.id, id))
         .returning();
 
+      // Revalidate the old slug too in case it changed
+      revalidatePostPages(post.slug, updatedPost[0]?.slug);
+
       return updatedPost[0];
     }),
 
@@ -203,7 +226,41 @@ export const postRouter = createTRPCRouter({
 
       await ctx.db.delete(posts).where(eq(posts.id, id));
 
+      revalidatePostPages(post.slug);
+
       return { success: true };
+    }),
+
+  /**
+   * Counts a view for a published post and returns the new total. Public,
+   * intentionally does NOT revalidate the static page — counts are shown by
+   * a client island, so the post itself stays cached.
+   */
+  registerView: publicProcedure
+    .input(z.object({ slug: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const updated = await ctx.db
+        .update(posts)
+        .set({
+          views: sql`${posts.views} + 1`,
+          // Pin updatedAt: its $onUpdate hook would otherwise mark the post
+          // as edited on every view
+          updatedAt: sql`${posts.updatedAt}`,
+        })
+        .where(and(eq(posts.slug, input.slug), eq(posts.published, true)))
+        .returning({ views: posts.views });
+
+      return { views: updated[0]?.views ?? null };
+    }),
+
+  getViews: publicProcedure
+    .input(z.object({ slug: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const post = await ctx.db.query.posts.findFirst({
+        where: and(eq(posts.slug, input.slug), eq(posts.published, true)),
+        columns: { views: true },
+      });
+      return { views: post?.views ?? null };
     }),
 
   search: publicProcedure

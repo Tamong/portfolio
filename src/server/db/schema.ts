@@ -44,6 +44,7 @@ export const posts = createTable(
       .references(() => users.id)
       .notNull(),
     published: boolean("published").default(false).notNull(),
+    views: integer("views").default(0).notNull(),
   },
   (post) => ({
     slugIdx: index("post_slug_idx").on(post.slug),

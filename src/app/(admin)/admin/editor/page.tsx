@@ -220,7 +220,7 @@ function PostEditor() {
           {dirty && <span className="ml-2 text-amber-500">● unsaved</span>}
         </span>
         <div className="ml-auto flex items-center gap-2">
-          {postId && (
+          {postId && published && (
             <Button variant="outline" size="sm" asChild>
               <a
                 href={`/posts/${customSlug || slugify(title)}`}

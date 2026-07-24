@@ -35,6 +35,8 @@ declare module "next-auth" {
  * @see https://next-auth.js.org/configuration/options
  */
 export const authConfig = {
+  // Auto-trusted on Vercel; needed for local `next start` testing
+  trustHost: true,
   providers: [
     GoogleProvider,
     /**

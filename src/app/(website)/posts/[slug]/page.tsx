@@ -1,22 +1,27 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 import { CustomMDX } from "@/components/post/mdx";
-import { getBlogPostBySlug } from "@/lib/posts";
+import { getBlogPostBySlug, getBlogPosts } from "@/lib/posts";
 import { formatDate } from "@/lib/utils";
 import { metaData } from "@/config";
 
 import { Separator } from "@/components/ui/separator";
 
-import { auth } from "@/server/auth";
-import Comments from "@/app/_components/comments";
-import { HydrateClient } from "@/trpc/server";
+import CommentsSection from "@/app/_components/comments-section";
+import ViewCounter from "@/app/_components/view-counter";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-// Update generateMetadata
+// The post body is fully static: pages are prerendered for all published
+// posts and only regenerated when a post is saved in the admin (the tRPC
+// mutations call revalidatePath). Views and comments are client islands.
+export async function generateStaticParams() {
+  const posts = await getBlogPosts();
+  return posts.map((post) => ({ slug: post.slug }));
+}
+
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
@@ -27,12 +32,12 @@ export async function generateMetadata({
     notFound();
   }
 
-  const { title, publishedAt, summary } = post; // image; // <-- featured image in db
-  const description = summary ?? `Read ${title} on ${metaData.name}'s blog`; // Fallback description if summary is empty
+  const { title, publishedAt, summary } = post;
+  const description = summary ?? `Read ${title} on ${metaData.name}'s blog`;
 
   const sanitizedTitle = title.replace(/[^a-zA-Z0-9 ]/g, " ");
 
-  const ogImage = `${metaData.baseUrl}api/og?title=${encodeURIComponent(sanitizedTitle)}&path=posts`; // image; <-- featured image in db
+  const ogImage = `${metaData.baseUrl}api/og?title=${encodeURIComponent(sanitizedTitle)}&path=posts`;
 
   return {
     title,
@@ -55,7 +60,6 @@ export async function generateMetadata({
 }
 
 export default async function PostPage({ params }: PageProps) {
-  const session = await auth();
   const { slug } = await params;
   const post = await getBlogPostBySlug(slug);
 
@@ -93,33 +97,22 @@ export default async function PostPage({ params }: PageProps) {
             }),
           }}
         />
-        <Suspense>
-          <h1 className="title mb-3 text-2xl font-medium tracking-tight">
-            {post.title}
-          </h1>
-          <div className="mt-2 mb-8 flex items-center justify-between">
-            <p className="text-sm">
-              {post.publishedAt ? formatDate(post.publishedAt) : "Unpublished"}
-            </p>
-          </div>
-          <article>
-            <CustomMDX source={post.content} />
-          </article>
-          <Separator className="my-8" />
-        </Suspense>
+        <h1 className="title mb-3 text-2xl font-medium tracking-tight">
+          {post.title}
+        </h1>
+        <div className="mt-2 mb-8 flex items-center justify-between">
+          <p className="text-sm">
+            {post.publishedAt ? formatDate(post.publishedAt) : "Unpublished"}
+          </p>
+          <ViewCounter slug={post.slug} />
+        </div>
+        <article>
+          <CustomMDX source={post.content} />
+        </article>
+        <Separator className="my-8" />
       </section>
       <div className="mt-16">
-        <Suspense
-          fallback={
-            <div className="text-muted-foreground text-sm">
-              Loading comments...
-            </div>
-          }
-        >
-          <HydrateClient>
-            <Comments slug={slug} session={session} />
-          </HydrateClient>
-        </Suspense>
+        <CommentsSection slug={slug} />
       </div>
     </div>
   );
