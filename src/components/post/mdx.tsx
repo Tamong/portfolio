@@ -214,6 +214,10 @@ export const CustomMDX: FC<MDXRemoteProps> = (props) => {
         } as MDXRemoteProps["components"]
       }
       options={{
+        // Posts are authored only via the admin editor (trusted content), so
+        // allow JSX expressions like data={{...}} and width={420}; v6 strips
+        // them by default. blockDangerousJS stays on to block eval/process/etc.
+        blockJS: false,
         mdxOptions: {
           remarkPlugins: [remarkMath],
           rehypePlugins: [rehypeKatex],

@@ -4,10 +4,11 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import { auth } from "@/server/auth";
-import { cn } from "@/lib/utils";
-import { FileText, Edit } from "lucide-react";
 import { TRPCReactProvider } from "@/trpc/react";
 import { GeistMono } from "geist/font/mono";
+import { ThemeProvider } from "next-themes";
+import { Toaster } from "@/components/ui/sonner";
+import { AdminNav } from "./nav";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -16,12 +17,10 @@ interface AdminLayoutProps {
 export default async function AdminLayout({ children }: AdminLayoutProps) {
   const session = await auth();
 
-  // Redirect if not authenticated
   if (!session?.user) {
     redirect("/api/auth/signin");
   }
 
-  // Redirect if user is signed in but not an admin
   if (session.user.role !== "admin") {
     redirect("/");
   }
@@ -29,71 +28,52 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
   return (
     <html lang="en" className={GeistMono.className} suppressHydrationWarning>
       <head>
-        <title>Philip Wallis</title>
+        <title>Admin · Philip Wallis</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/favicon.ico" />
-        <link rel="manifest" href="/manifest.json" />
       </head>
-      <body className="bg-background">
-        <div className="mx-auto mt-8 flex min-h-screen max-w-7xl flex-col px-4">
-          <header className="sticky top-0 z-50 w-full border-b backdrop-blur">
-            <div className="container flex h-14 items-center">
-              <div className="mr-4 flex">
-                <Link href="/admin">
-                  <h1 className="text-lg font-semibold">Admin Dashboard</h1>
+      <body className="bg-background text-foreground">
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <TRPCReactProvider>
+            <div className="flex min-h-screen">
+              <aside className="bg-card/50 sticky top-0 flex h-screen w-52 shrink-0 flex-col border-r p-3">
+                <Link href="/admin" className="mb-6 px-3 pt-2">
+                  <span className="text-sm font-semibold tracking-tight">
+                    pwallis / admin
+                  </span>
                 </Link>
-              </div>
-              <nav className="flex items-center space-x-4 lg:space-x-6">
-                <AdminNavLink href="/admin/posts">
-                  <FileText className="mr-2 h-4 w-4" />
-                  Posts
-                </AdminNavLink>
-                <AdminNavLink href="/admin/editor">
-                  <Edit className="mr-2 h-4 w-4" />
-                  Editor
-                </AdminNavLink>
-              </nav>
-              <div className="ml-auto flex items-center space-x-4">
-                <div className="flex items-center space-x-2">
+                <AdminNav />
+                <div className="mt-auto flex items-center gap-2 border-t px-3 pt-3 pb-1">
                   {session.user.image && (
                     <Image
                       src={session.user.image}
                       width={64}
                       height={64}
                       alt={session.user.name ?? "User"}
-                      className="h-8 w-8 rounded-full"
+                      className="h-7 w-7 rounded-full"
                     />
                   )}
+                  <div className="min-w-0">
+                    <p className="truncate text-xs font-medium">
+                      {session.user.name}
+                    </p>
+                    <Link
+                      href="/api/auth/signout"
+                      className="text-muted-foreground hover:text-foreground text-xs"
+                    >
+                      Sign out
+                    </Link>
+                  </div>
                 </div>
-              </div>
+              </aside>
+              <main className="min-w-0 flex-1">
+                <div className="mx-auto max-w-6xl px-6 py-8">{children}</div>
+              </main>
             </div>
-          </header>
-          <main className="flex">
-            <TRPCReactProvider>{children}</TRPCReactProvider>
-          </main>
-        </div>
+            <Toaster />
+          </TRPCReactProvider>
+        </ThemeProvider>
       </body>
     </html>
-  );
-}
-
-interface AdminNavLinkProps {
-  href: string;
-  children: React.ReactNode;
-  className?: string;
-}
-
-function AdminNavLink({ href, children, className }: AdminNavLinkProps) {
-  return (
-    <Link
-      href={href}
-      className={cn(
-        "text-muted-foreground hover:text-primary flex items-center text-sm font-medium transition-colors",
-        className,
-      )}
-    >
-      {children}
-    </Link>
   );
 }

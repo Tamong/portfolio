@@ -1,0 +1,145 @@
+/* Typography and chrome for the WYSIWYG editor surface */
+
+.mdx-editor .ProseMirror {
+  min-height: 600px;
+  padding: 1.25rem 1.5rem 40vh;
+  outline: none;
+  line-height: 1.75;
+  font-size: 0.95rem;
+}
+
+.mdx-editor .ProseMirror > * + * {
+  margin-top: 0.75rem;
+}
+
+.mdx-editor .ProseMirror h1 {
+  font-size: 2.25rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.mdx-editor .ProseMirror h2 {
+  font-size: 1.875rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.mdx-editor .ProseMirror h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.mdx-editor .ProseMirror h4 {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.mdx-editor .ProseMirror h5,
+.mdx-editor .ProseMirror h6 {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+}
+
+.mdx-editor .ProseMirror ul {
+  list-style: disc;
+  margin-left: 1.5rem;
+}
+
+.mdx-editor .ProseMirror ol {
+  list-style: decimal;
+  margin-left: 2rem;
+}
+
+.mdx-editor .ProseMirror blockquote {
+  border-left: 4px solid var(--border);
+  padding-left: 1rem;
+  font-style: italic;
+  color: var(--muted-foreground);
+}
+
+.mdx-editor .ProseMirror a {
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.mdx-editor .ProseMirror code:not(pre code) {
+  background: color-mix(in oklab, var(--muted) 70%, transparent);
+  border-radius: 0.25rem;
+  padding: 0.15em 0.35em;
+  font-size: 0.875em;
+}
+
+.mdx-editor .ProseMirror hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+/* Tables (edited natively, serialized to the <Table> component) */
+.mdx-editor .ProseMirror table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1rem 0;
+  table-layout: fixed;
+}
+
+.mdx-editor .ProseMirror th,
+.mdx-editor .ProseMirror td {
+  border: 1px solid var(--border);
+  padding: 0.5rem 1rem;
+  text-align: left;
+  vertical-align: top;
+  position: relative;
+}
+
+.mdx-editor .ProseMirror th {
+  background: color-mix(in oklab, var(--muted) 60%, transparent);
+  font-weight: 600;
+}
+
+.mdx-editor .ProseMirror th p,
+.mdx-editor .ProseMirror td p {
+  margin: 0;
+}
+
+.mdx-editor .ProseMirror .selectedCell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: color-mix(in oklab, var(--primary) 15%, transparent);
+  pointer-events: none;
+}
+
+/* Placeholder */
+.mdx-editor .ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: var(--muted-foreground);
+  pointer-events: none;
+  height: 0;
+}
+
+/* Node selection affordances */
+.mdx-editor .mdx-node-selected {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 0.5rem;
+}
+
+.mdx-editor .ProseMirror-selectednode .mdx-node,
+.mdx-editor .ProseMirror-selectednode.mdx-node {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 0.5rem;
+}
+
+/* Drop cursor / gap cursor */
+.mdx-editor .ProseMirror-gapcursor:after {
+  border-top: 1px solid var(--foreground);
+}
