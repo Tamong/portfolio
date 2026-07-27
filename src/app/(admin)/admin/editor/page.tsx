@@ -209,7 +209,7 @@ function PostEditor() {
   return (
     <div>
       {/* Top bar */}
-      <div className="mb-6 flex items-center gap-3">
+      <div className="mb-6 flex flex-wrap items-center gap-x-3 gap-y-2">
         <Button variant="ghost" size="sm" asChild>
           <Link href="/admin/posts">
             <ArrowLeft className="mr-1 h-4 w-4" /> Posts

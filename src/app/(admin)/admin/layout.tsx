@@ -35,8 +35,40 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
       <body className="bg-background text-foreground">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <TRPCReactProvider>
-            <div className="flex min-h-screen">
-              <aside className="bg-card/50 sticky top-0 flex h-screen w-52 shrink-0 flex-col border-r p-3">
+            <div className="flex min-h-screen flex-col md:flex-row">
+              {/* Mobile: sticky top bar with horizontal nav */}
+              <header className="border-b md:hidden">
+                <div className="flex items-center justify-between px-4 pt-3 pb-1">
+                  <Link href="/admin">
+                    <span className="text-sm font-semibold tracking-tight">
+                      pwallis / admin
+                    </span>
+                  </Link>
+                  <div className="flex items-center gap-2">
+                    {session.user.image && (
+                      <Image
+                        src={session.user.image}
+                        width={64}
+                        height={64}
+                        alt={session.user.name ?? "User"}
+                        className="h-6 w-6 rounded-full"
+                      />
+                    )}
+                    <Link
+                      href="/api/auth/signout"
+                      className="text-muted-foreground hover:text-foreground text-xs"
+                    >
+                      Sign out
+                    </Link>
+                  </div>
+                </div>
+                <div className="px-2 pb-1">
+                  <AdminNav orientation="horizontal" />
+                </div>
+              </header>
+
+              {/* Desktop: pinned sidebar */}
+              <aside className="bg-card/50 sticky top-0 hidden h-screen w-52 shrink-0 flex-col border-r p-3 md:flex">
                 <Link href="/admin" className="mb-6 px-3 pt-2">
                   <span className="text-sm font-semibold tracking-tight">
                     pwallis / admin
@@ -67,7 +99,9 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
                 </div>
               </aside>
               <main className="min-w-0 flex-1">
-                <div className="mx-auto max-w-6xl px-6 py-8">{children}</div>
+                <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8">
+                  {children}
+                </div>
               </main>
             </div>
             <Toaster />
